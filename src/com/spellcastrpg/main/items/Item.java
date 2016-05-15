@@ -1,20 +1,30 @@
 package com.spellcastrpg.main.items;
 
+import java.awt.image.BufferedImage;
+
 public class Item {
+    private BufferedImage image;
     private String name;
     private boolean canUse;
     private double usesPerSecond;
 
     public Item() {
+        this.image = null;
         this.name = "";
         this.canUse = true;
         this.usesPerSecond = 1;
     }
 
+    public BufferedImage getImage() {
+        return this.image;
+    }
+    void setImage(BufferedImage image) {
+        this.image = image;
+    }
     public String getName() {
         return this.name;
     }
-    private void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
     public boolean canUse() {
@@ -23,7 +33,7 @@ public class Item {
     public double getUsesPerSecond() {
         return this.usesPerSecond;
     }
-    private void setUsesPerSecond(double usesPerSecond) {
+    void setUsesPerSecond(double usesPerSecond) {
         this.usesPerSecond = usesPerSecond;
     }
 

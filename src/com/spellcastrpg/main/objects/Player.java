@@ -5,6 +5,7 @@ import com.spellcastrpg.main.Key;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
+import com.spellcastrpg.main.items.Club;
 import com.spellcastrpg.main.items.Item;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
@@ -40,9 +41,11 @@ public class Player extends LivingObject {
     public void init() {
         super.init();
         this.inventory.init();
+        addItem(new Club());
     }
     @Override
     public void update() {
+        super.update();
         Vector2d movement = Vector2d.ZERO;
         if (Input.INSTANCE.keyDown(Key.W))
             movement = movement.add(0, -1);
@@ -59,7 +62,7 @@ public class Player extends LivingObject {
     }
     @Override
     public void render(Renderer r) {
-        r.fillRect(getBounds(), RGBAColor.RED);
+        r.fillRect(getBounds(), RGBAColor.GREEN);
         super.render(r);
     }
 }

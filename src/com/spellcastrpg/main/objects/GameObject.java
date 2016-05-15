@@ -6,6 +6,9 @@ import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.rendering.Renderer;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by laser_000 on 5/14/2016.
  */
@@ -64,7 +67,10 @@ public class GameObject {
         SpellCast.INSTANCE.getObjects().add(this);
         this.alive = true;
     }
-    public void update() {}
+    public void update() {
+        for (GameObject object : getCollisions())
+            collide(object);
+    }
     public void destroy() {
         SpellCast.INSTANCE.getObjects().remove(this);
         this.alive = false;
@@ -73,7 +79,18 @@ public class GameObject {
 
     }
 
+    public Set<GameObject> getCollisions() {
+        Set<GameObject> objects = new HashSet<>();
+        for (GameObject object : SpellCast.INSTANCE.getObjects())
+            if (!this.equals(object) && getBounds().intersects(object.getBounds()))
+                objects.add(object);
+        return objects;
+    }
 
+
+    public void collide(GameObject other) {
+
+    }
     public void keyDown(Key key) {
 
     }

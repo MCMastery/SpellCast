@@ -1,6 +1,7 @@
 package com.spellcastrpg.main.objects;
 
-import com.spellcastrpg.main.geometry.Vector2d;
+import com.spellcastrpg.main.geometry.*;
+import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
 
@@ -71,7 +72,11 @@ public abstract class LivingObject extends GameObject {
 
     @Override
     public void render(Renderer r) {
-        r.drawTextCentered((int) Math.round(getHealth()) + " / " + (int) Math.round(getMaxHealth()),
-                new Font(Font.MONOSPACED, Font.PLAIN, 12), getBounds(), RGBAColor.BLACK);
+        //r.drawTextCentered((int) Math.round(getHealth()) + " / " + (int) Math.round(getMaxHealth()),
+        //        new Font(Font.MONOSPACED, Font.PLAIN, 12), getBounds(), RGBAColor.BLACK);
+        Rectangle healthBar = new Rectangle(getPosition().getX(), getPosition().getY() - 20, getBounds().getWidth(), 16);
+        r.fillRoundedRect(healthBar, 10, 10, RGBAColor.RED);
+        r.fillRoundedRect(healthBar.setWidth(healthBar.getWidth() * (this.health / this.maxHealth)), 10, 10, RGBAColor.GREEN);
+        r.drawRoundedRect(healthBar, 10, 10, 1, RGBAColor.BLACK);
     }
 }

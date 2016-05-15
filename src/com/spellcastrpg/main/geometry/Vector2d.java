@@ -124,6 +124,9 @@ public class Vector2d {
         return new Vector2d(min.getX() + (max.getX() - min.getX()) * Math.random(),
                 min.getY() + (max.getY() - min.getY()) * Math.random());
     }
+    public static Vector2d random(Rectangle bounds) {
+        return random(bounds.getPosition(), bounds.getPosition().add(bounds.getSize().divide(2)));
+    }
 
 
     public Point2D toPoint2D() {

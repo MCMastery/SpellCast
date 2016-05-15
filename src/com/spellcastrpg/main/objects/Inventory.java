@@ -120,6 +120,7 @@ public class Inventory extends GameObject {
 
     @Override
     public void update() {
+        super.update();
         Item selectedItem = getSelectedItem();
         if (selectedItem != null && selectedItem.canUse() && Input.INSTANCE.mouseDown(Input.MOUSE_LEFT))
             selectedItem.use();
@@ -134,6 +135,12 @@ public class Inventory extends GameObject {
     public void render(Renderer r) {
         r.fillRoundedRect(getBounds(), this.radius, this.radius, this.background);
         Vector2d selectionPos = getBounds().getPosition().add(this.selection * 64, 0);
+        for (int slot = 0; slot < this.size; slot++) {
+            Item item = getItem(slot);
+            if (item == null)
+                continue;
+            r.drawRoundedImage(item.getImage(), this.radius, this.radius, new Vector2d(getBounds().getX() + slot * 64, getBounds().getY()));
+        }
         r.fillRoundedRect(new Rectangle(selectionPos, 64, 64), this.radius, this.radius, this.selectionColor);
         r.drawRoundedRect(getBounds(), this.radius, this.radius, this.borderWeight, this.border);
     }

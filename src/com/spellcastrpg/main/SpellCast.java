@@ -5,6 +5,7 @@ import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.map.Map;
 import com.spellcastrpg.main.objects.GameObject;
 import com.spellcastrpg.main.objects.Player;
+import com.spellcastrpg.main.objects.TestEnemy;
 import com.spellcastrpg.main.rendering.Renderer;
 
 import javax.imageio.ImageIO;
@@ -37,6 +38,8 @@ public class SpellCast {
         thread.setDaemon(true);
         thread.start();
         INSTANCE.init = true;
+
+        new TestEnemy().init();
     }
 
     private List<GameObject> objects;
