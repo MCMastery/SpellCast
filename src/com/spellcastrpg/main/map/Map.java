@@ -5,8 +5,10 @@ import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.objects.GameObject;
 import com.spellcastrpg.main.rendering.Renderer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,11 +48,11 @@ public class Map extends GameObject {
     }
 
 
-    public static Map load(File file) throws IOException {
-        List<String> lines = Files.readAllLines(file.toPath());
+    public static Map load(BufferedReader reader) throws IOException {
         Map map = new Map();
         int y = 0;
-        for (String line : lines) {
+        String line;
+        while ((line = reader.readLine()) != null) {
             if (line.isEmpty())
                 continue;
             String[] split = line.split(" ");

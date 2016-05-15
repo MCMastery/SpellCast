@@ -9,8 +9,7 @@ import com.spellcastrpg.main.rendering.Renderer;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -112,7 +111,8 @@ public class SpellCast {
 
     public static BufferedImage loadImage(String name) {
         try {
-            return ImageIO.read(new File("resources/" + name));
+            InputStream stream = SpellCast.class.getClassLoader().getResourceAsStream("com/spellcastrpg/main/resources/" + name);
+            return ImageIO.read(stream);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -120,7 +120,8 @@ public class SpellCast {
     }
     public static Map loadMap(String name) {
         try {
-            return Map.load(new File("resources/" + name));
+            InputStream stream = SpellCast.class.getClassLoader().getResourceAsStream("com/spellcastrpg/main/resources/" + name);
+            return Map.load(new BufferedReader(new InputStreamReader(stream)));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
