@@ -34,6 +34,25 @@ public class Rectangle {
         return setPosition(new Vector2d(x, y));
     }
 
+    public double getX() {
+        return this.position.getX();
+    }
+    public Rectangle setX(double x) {
+        return new Rectangle(this.position.setX(x), this.width, this.height);
+    }
+    public double getY() {
+        return this.position.getY();
+    }
+    public Rectangle setY(double y) {
+        return new Rectangle(this.position.setY(y), this.width, this.height);
+    }
+    public double getX2() {
+        return this.position.getX() + this.width;
+    }
+    public double getY2() {
+        return this.position.getY() + this.height;
+    }
+
     public double getWidth() {
         return this.width;
     }
@@ -59,14 +78,18 @@ public class Rectangle {
 
     public Rectangle clamp(Rectangle bounds) {
         Rectangle clamped = this;
-        if (clamped.getPosition().getX() < bounds.getPosition().getX())
-            clamped = clamped.setPosition(bounds.getPosition().getX(), clamped.getPosition().getY());
-        if (clamped.getPosition().getY() < bounds.getPosition().getY())
-            clamped = clamped.setPosition(clamped.getPosition().getY(), bounds.getPosition().getY());
-        if (clamped.getPosition().getX() > bounds.getPosition().getX() + bounds.getWidth())
-            clamped = clamped.setPosition(bounds.getPosition().getX(), clamped.getPosition().getY());
-        if (clamped.getPosition().getY() > bounds.getPosition().getY() + bounds.getHeight())
-            clamped = clamped.setPosition(clamped.getPosition().getX(), bounds.getPosition().getY());
+        // left
+        if (clamped.getX() < bounds.getX())
+            clamped = clamped.setX(bounds.getX());
+        // top
+        if (clamped.getY() < bounds.getY())
+            clamped = clamped.setY(bounds.getY());
+        // right
+        if (clamped.getX2() > bounds.getX2())
+            clamped = clamped.setX(bounds.getX2() - clamped.getWidth());
+        // bottom
+        if (clamped.getY2() > bounds.getY2())
+            clamped = clamped.setY(bounds.getY2() - clamped.getHeight());
         return clamped;
     }
     public Rectangle expand(Vector2d amount) {
@@ -113,5 +136,9 @@ public class Rectangle {
     public boolean equals(Object other) {
         return other instanceof Rectangle && ((Rectangle) other).getPosition().equals(this.position)
                 && ((Rectangle) other).getWidth() == this.width && ((Rectangle) other).getHeight() == this.height;
+    }
+    @Override
+    public String toString() {
+        return "(" + this.position + "," + this.width + "," + this.height + ")";
     }
 }

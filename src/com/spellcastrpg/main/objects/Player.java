@@ -1,13 +1,12 @@
 package com.spellcastrpg.main.objects;
 
 import com.spellcastrpg.main.Input;
+import com.spellcastrpg.main.Key;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
-
-import java.awt.event.KeyEvent;
 
 /**
  * Created by laser_000 on 5/14/2016.
@@ -24,13 +23,13 @@ public class Player extends LivingObject {
     @Override
     public void update() {
         Vector2d movement = Vector2d.ZERO;
-        if (Input.INSTANCE.keyDown(KeyEvent.VK_W))
+        if (Input.INSTANCE.keyDown(Key.W))
             movement = movement.add(0, -1);
-        if (Input.INSTANCE.keyDown(KeyEvent.VK_A))
+        if (Input.INSTANCE.keyDown(Key.A))
             movement = movement.add(-1, 0);
-        if (Input.INSTANCE.keyDown(KeyEvent.VK_S))
+        if (Input.INSTANCE.keyDown(Key.S))
             movement = movement.add(0, 1);
-        if (Input.INSTANCE.keyDown(KeyEvent.VK_D))
+        if (Input.INSTANCE.keyDown(Key.D))
             movement = movement.add(1, 0);
         movement = movement.getNormalized().multiply(getSpeed());
         setPosition(getPosition().add(movement));
