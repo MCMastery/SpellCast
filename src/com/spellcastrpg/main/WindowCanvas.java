@@ -15,6 +15,7 @@ public class WindowCanvas extends JComponent {
         setFocusable(true);
         addKeyListener(Input.INSTANCE);
         addMouseListener(Input.INSTANCE);
+        addMouseWheelListener(Input.INSTANCE);
     }
 
     @Override
@@ -28,10 +29,20 @@ public class WindowCanvas extends JComponent {
         Rectangle cameraClamp = SpellCast.INSTANCE.getMapSize().expand(
                 -SpellCast.INSTANCE.getWindowSize().getWidth(), -SpellCast.INSTANCE.getWindowSize().getHeight());
         SpellCast.INSTANCE.setCameraPosition(SpellCast.INSTANCE.getCameraPosition().clamp(cameraClamp));
+
+        // sort objects by layers
+        SpellCast.INSTANCE.sortObjects();
+
+
         Vector2d translate = SpellCast.INSTANCE.getCameraPosition().subtract(getRectSize().getSize().divide(2)).multiply(-1);
         g2d.translate(translate.getX(), translate.getY());
 
         SpellCast.INSTANCE.renderObjects(r);
+
+        g2d.translate(-translate.getX(), -translate.getY());
+
+        // render camera-following objects after reverse translate
+        SpellCast.INSTANCE.renderCameraFollowObjects(r);
     }
 
     public Rectangle getRectSize() {

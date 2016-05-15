@@ -1,5 +1,6 @@
 package com.spellcastrpg.main.objects;
 
+import com.spellcastrpg.main.Key;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
@@ -10,13 +11,15 @@ import com.spellcastrpg.main.rendering.Renderer;
  */
 public class GameObject {
     private Rectangle bounds;
-    private boolean alive;
+    private boolean alive, followCamera;
     private int layer;
 
     public GameObject() {
         this.bounds = new Rectangle();
         this.alive = false;
         this.layer = 0;
+        // does this object always appear at a certain place on the screen, regardless of where the camera is?
+        this.followCamera = false;
     }
 
     public Rectangle getBounds() {
@@ -49,6 +52,12 @@ public class GameObject {
     public void setLayer(int layer) {
         this.layer = layer;
     }
+    public boolean followsCamera() {
+        return this.followCamera;
+    }
+    public void setFollowCamera(boolean followCamera) {
+        this.followCamera = followCamera;
+    }
 
 
     public void init() {
@@ -61,6 +70,23 @@ public class GameObject {
         this.alive = false;
     }
     public void render(Renderer r) {
+
+    }
+
+
+    public void keyDown(Key key) {
+
+    }
+    public void keyUp(Key key) {
+
+    }
+    public void mouseDown(int btn, Vector2d position) {
+
+    }
+    public void mouseUp(int btn, Vector2d position) {
+
+    }
+    public void mouseScroll(double amount) {
 
     }
 }

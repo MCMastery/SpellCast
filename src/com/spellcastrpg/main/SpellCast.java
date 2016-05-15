@@ -95,8 +95,7 @@ public class SpellCast {
         return this.init;
     }
 
-
-    public void renderObjects(Renderer r) {
+    public void sortObjects() {
         Collections.sort(this.objects, (o1, o2) -> {
             if (o1.getLayer() > o2.getLayer())
                 return 1;
@@ -104,8 +103,17 @@ public class SpellCast {
                 return -1;
             return 0;
         });
+    }
+
+    public void renderCameraFollowObjects(Renderer r) {
         for (GameObject object : new ArrayList<>(this.objects))
-            object.render(r);
+            if (object.followsCamera())
+                object.render(r);
+    }
+    public void renderObjects(Renderer r) {
+        for (GameObject object : new ArrayList<>(this.objects))
+            if (!object.followsCamera())
+                object.render(r);
     }
 
 
