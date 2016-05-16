@@ -38,8 +38,8 @@ public class SpellCast {
         thread.setDaemon(true);
         thread.start();
         INSTANCE.init = true;
-
-        new TestEnemy().init();
+        for (int i = 0; i < 10; i++)
+            new TestEnemy().init();
     }
 
     private List<GameObject> objects;

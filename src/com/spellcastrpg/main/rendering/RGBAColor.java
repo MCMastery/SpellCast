@@ -30,25 +30,29 @@ public class RGBAColor {
     }
     
     public double getR() {
-        return this.r;
+        // clamp
+        return this.r > 1 ? 1 : (this.r < 0 ? 0 : this.r);
     }
     public RGBAColor setR(double r) {
         return new RGBAColor(r, this.g, this.b, this.a);
     }
     public double getG() {
-        return this.g;
+        // clamp
+        return this.g > 1 ? 1 : (this.g < 0 ? 0 : this.g);
     }
     public RGBAColor setG(double g) {
         return new RGBAColor(this.r, g, this.b, this.a);
     }
     public double getB() {
-        return this.b;
+        // clamp
+        return this.b > 1 ? 1 : (this.b < 0 ? 0 : this.b);
     }
     public RGBAColor setB(double b) {
         return new RGBAColor(this.r, this.g, b, this.a);
     }
     public double getA() {
-        return this.a;
+        // clamp
+        return this.a > 1 ? 1 : (this.a < 0 ? 0 : this.a);
     }
     public RGBAColor setA(double a) {
         return new RGBAColor(this.r, this.g, this.b, a);
@@ -56,14 +60,14 @@ public class RGBAColor {
 
 
     public Color toColor() {
-        return new Color((int) Math.round(this.r * 255), (int) Math.round(this.g * 255), (int) Math.round(this.b * 255),
-                (int) Math.round(this.a * 255));
+        return new Color((int) Math.round(getR() * 255), (int) Math.round(getG() * 255), (int) Math.round(getB() * 255),
+                (int) Math.round(getA() * 255));
     }
 
 
     @Override
     public boolean equals(Object other) {
-        return other instanceof RGBAColor && ((RGBAColor) other).getR() == this.r && ((RGBAColor) other).getG() == this.g
-                && ((RGBAColor) other).getB() == this.b && ((RGBAColor) other).getA() == this.a;
+        return other instanceof RGBAColor && ((RGBAColor) other).getR() == getR() && ((RGBAColor) other).getG() == getG()
+                && ((RGBAColor) other).getB() == getB() && ((RGBAColor) other).getA() == getA();
     }
 }

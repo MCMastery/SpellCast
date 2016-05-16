@@ -5,10 +5,14 @@ import com.spellcastrpg.main.Key;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
-import com.spellcastrpg.main.items.Club;
 import com.spellcastrpg.main.items.Item;
+import com.spellcastrpg.main.items.ItemObject;
+import com.spellcastrpg.main.items.Wand;
+import com.spellcastrpg.main.objects.spells.SpellType;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
+
+import java.util.HashSet;
 
 /**
  * Created by laser_000 on 5/14/2016.
@@ -31,7 +35,7 @@ public class Player extends LivingObject {
     public Item getSelectedItem() {
         return this.inventory.getSelectedItem();
     }
-    public boolean addItem(Item item) {
+    public boolean addItem(ItemObject item) {
         return this.inventory.addItem(item);
     }
 
@@ -41,7 +45,7 @@ public class Player extends LivingObject {
     public void init() {
         super.init();
         this.inventory.init();
-        addItem(new Club());
+        addItem(new Wand(SpellType.WIND, new HashSet<>()));
     }
     @Override
     public void update() {

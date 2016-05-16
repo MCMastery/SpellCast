@@ -73,6 +73,9 @@ public class Vector2d {
     public double getDistance(Vector2d other) {
         return Math.sqrt(Math.pow(other.getX() - this.x, 2) + Math.pow(other.getY() - this.y, 2));
     }
+    public double getDistanceSquared(Vector2d other) {
+        return Math.pow(other.getX() - this.x, 2) + Math.pow(other.getY() - this.y, 2);
+    }
     public double getMagnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
@@ -111,7 +114,7 @@ public class Vector2d {
         return lerp(other, speed,  speed);
     }
     public Vector2d lerp(Vector2d other, double speed, double error) {
-        if (equals(other) || this.getDistance(other) <= error)
+        if (equals(other) || getDistanceSquared(other) <= error * error)
             return other;
         double dx = other.getX() - this.x, dy = other.getY() - this.y;
         double direction = Math.atan2(dy, dx);
@@ -125,7 +128,7 @@ public class Vector2d {
                 min.getY() + (max.getY() - min.getY()) * Math.random());
     }
     public static Vector2d random(Rectangle bounds) {
-        return random(bounds.getPosition(), bounds.getPosition().add(bounds.getSize().divide(2)));
+        return random(bounds.getPosition(), bounds.getPosition().add(bounds.getSize()));
     }
 
 

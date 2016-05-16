@@ -6,6 +6,7 @@ import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.rendering.Renderer;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -81,7 +82,7 @@ public class GameObject {
 
     public Set<GameObject> getCollisions() {
         Set<GameObject> objects = new HashSet<>();
-        for (GameObject object : SpellCast.INSTANCE.getObjects())
+        for (GameObject object : new ArrayList<>(SpellCast.INSTANCE.getObjects()))
             if (!this.equals(object) && getBounds().intersects(object.getBounds()))
                 objects.add(object);
         return objects;

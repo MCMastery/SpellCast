@@ -67,7 +67,21 @@ public abstract class LivingObject extends GameObject {
     }
 
     public void moveToward(Vector2d position) {
-        setCenter(getCenter().lerp(position, this.speed));
+        this.moveToward(position, this.speed);
+    }
+    public void moveAwayFrom(Vector2d position) {
+        this.moveAwayFrom(position, this.speed);
+    }
+    public void moveToward(Vector2d position, double speed) {
+        setCenter(getCenter().lerp(position, speed));
+    }
+    public void moveAwayFrom(Vector2d position, double speed) {
+        Vector2d towardCenter = getCenter().lerp(position, speed);
+        Vector2d delta = getCenter().subtract(towardCenter);
+        //todo if i am already at the given position I should move from, i will choose a random direction to move in (maybe not the best way)
+        if (getCenter().equals(position))
+            delta = Vector2d.random(new Vector2d(-1, -1), new Vector2d(1, 1)).getNormalized().multiply(speed);
+        setCenter(getCenter().add(delta));
     }
 
     @Override

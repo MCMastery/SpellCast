@@ -9,7 +9,7 @@ import com.spellcastrpg.main.rendering.Renderer;
 public class TestEnemy extends Enemy {
     public TestEnemy() {
         setBounds(new Rectangle(0, 0, 64, 64));
-        setCenter(Vector2d.random(SpellCast.INSTANCE.getMapSize().expand(getBounds().getSize().multiply(-1))));
+        setCenter(Vector2d.random(SpellCast.INSTANCE.getMapSize().expand(getBounds().getSize().divide(2).multiply(-1))));
     }
     @Override
     public void update() {

@@ -4,7 +4,7 @@ import com.spellcastrpg.main.Input;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
-import com.spellcastrpg.main.items.Item;
+import com.spellcastrpg.main.items.ItemObject;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
 
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Inventory extends GameObject {
-    private Map<Integer, Item> contents;
+    private Map<Integer, ItemObject> contents;
     private int selection, size;
     private RGBAColor background, border, selectionColor;
     private double radius, borderWeight;
@@ -34,15 +34,15 @@ public class Inventory extends GameObject {
         setFollowCamera(true);
     }
 
-    public Map<Integer, Item> getContents() {
+    public Map<Integer, ItemObject> getContents() {
         return this.contents;
     }
-    public Item getItem(int slot) {
+    public ItemObject getItem(int slot) {
         if (slot < 0 || slot >= this.size)
             return null;
         return this.contents.get(slot);
     }
-    public boolean addItem(Item item) {
+    public boolean addItem(ItemObject item) {
         for (int slot = 0; slot < this.size; slot++) {
             if (this.contents.get(slot) == null) {
                 this.contents.put(slot, item);
@@ -51,10 +51,10 @@ public class Inventory extends GameObject {
         }
         return false;
     }
-    public Item removeItem(int slot) {
+    public ItemObject removeItem(int slot) {
         return this.contents.remove(slot);
     }
-    public boolean setItem(int slot, Item item) {
+    public boolean setItem(int slot, ItemObject item) {
         if (slot < 0 || slot >= this.size)
             return false;
         removeItem(slot);
@@ -79,7 +79,7 @@ public class Inventory extends GameObject {
             selection = Math.abs(this.size - selection);
         this.selection = selection;
     }
-    public Item getSelectedItem() {
+    public ItemObject getSelectedItem() {
         return getItem(this.selection);
     }
 
@@ -121,7 +121,7 @@ public class Inventory extends GameObject {
     @Override
     public void update() {
         super.update();
-        Item selectedItem = getSelectedItem();
+        ItemObject selectedItem = getSelectedItem();
         if (selectedItem != null && selectedItem.canUse() && Input.INSTANCE.mouseDown(Input.MOUSE_LEFT))
             selectedItem.use();
     }
@@ -136,10 +136,10 @@ public class Inventory extends GameObject {
         r.fillRoundedRect(getBounds(), this.radius, this.radius, this.background);
         Vector2d selectionPos = getBounds().getPosition().add(this.selection * 64, 0);
         for (int slot = 0; slot < this.size; slot++) {
-            Item item = getItem(slot);
-            if (item == null)
+            ItemObject item = getItem(slot);
+            if (item == null || item.getType().getImage() == null)
                 continue;
-            r.drawRoundedImage(item.getImage(), this.radius, this.radius, new Vector2d(getBounds().getX() + slot * 64, getBounds().getY()));
+            r.drawRoundedImage(item.getType().getImage(), this.radius, this.radius, new Vector2d(getBounds().getX() + slot * 64, getBounds().getY()));
         }
         r.fillRoundedRect(new Rectangle(selectionPos, 64, 64), this.radius, this.radius, this.selectionColor);
         r.drawRoundedRect(getBounds(), this.radius, this.radius, this.borderWeight, this.border);
