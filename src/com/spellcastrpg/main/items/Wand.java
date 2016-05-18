@@ -8,9 +8,9 @@ import java.util.Set;
 
 public class Wand extends ItemObject {
     private final SpellType spell;
-    private Set<Item> modifiers;
+    private Set<ItemObject> modifiers;
 
-    public Wand(SpellType spell, Set<Item> modifiers) {
+    public Wand(SpellType spell, Set<ItemObject> modifiers) {
         super(ItemType.WAND);
         this.spell = spell;
         this.modifiers = Collections.unmodifiableSet(modifiers);

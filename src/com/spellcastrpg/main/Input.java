@@ -57,7 +57,7 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
         Key key = Key.fromCode(e.getKeyCode());
         if (keyUp(key)) {
             this.keysDown.add(key);
-            for (GameObject object : new ArrayList<>(SpellCast.INSTANCE.getObjects()))
+            for (GameObject object : SpellCast.INSTANCE.getObjects())
                 object.keyDown(key);
         }
     }
@@ -65,7 +65,7 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
     public void keyReleased(KeyEvent e) {
         Key key = Key.fromCode(e.getKeyCode());
         this.keysDown.remove(key);
-        for (GameObject object : new ArrayList<>(SpellCast.INSTANCE.getObjects()))
+        for (GameObject object : SpellCast.INSTANCE.getObjects())
             object.keyUp(key);
     }
 
@@ -75,14 +75,14 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
     public void mousePressed(MouseEvent e) {
         if (mouseUp(e.getButton())) {
             this.buttonsDown.add(e.getButton());
-            for (GameObject object : new ArrayList<>(SpellCast.INSTANCE.getObjects()))
+            for (GameObject object : SpellCast.INSTANCE.getObjects())
                 object.mouseDown(e.getButton(), getMousePosition());
         }
     }
     @Override
     public void mouseReleased(MouseEvent e) {
         this.buttonsDown.remove(e.getButton());
-        for (GameObject object : new ArrayList<>(SpellCast.INSTANCE.getObjects()))
+        for (GameObject object : SpellCast.INSTANCE.getObjects())
             object.mouseUp(e.getButton(), getMousePosition());
     }
     @Override
@@ -92,7 +92,7 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        for (GameObject object : new ArrayList<>(SpellCast.INSTANCE.getObjects()))
+        for (GameObject object : SpellCast.INSTANCE.getObjects())
             object.mouseScroll(e.getPreciseWheelRotation());
     }
 }

@@ -65,7 +65,7 @@ public class GameObject {
 
 
     public void init() {
-        SpellCast.INSTANCE.getObjects().add(this);
+        SpellCast.INSTANCE.registerObject(this);
         this.alive = true;
     }
     public void update() {
@@ -73,7 +73,7 @@ public class GameObject {
             collide(object);
     }
     public void destroy() {
-        SpellCast.INSTANCE.getObjects().remove(this);
+        SpellCast.INSTANCE.unregisterObject(this);
         this.alive = false;
     }
     public void render(Renderer r) {
@@ -82,10 +82,27 @@ public class GameObject {
 
     public Set<GameObject> getCollisions() {
         Set<GameObject> objects = new HashSet<>();
-        for (GameObject object : new ArrayList<>(SpellCast.INSTANCE.getObjects()))
+        for (GameObject object : SpellCast.INSTANCE.getObjects())
             if (!this.equals(object) && getBounds().intersects(object.getBounds()))
                 objects.add(object);
         return objects;
+    }
+
+    public void cancelCollision(GameObject obj) {
+        if (obj.getBounds().intersects(this.bounds)) {
+            Rectangle intersection = obj.getBounds().getIntersection(this.bounds);
+            if (intersection.getWidth() < intersection.getHeight()) {
+                if (this.bounds.getX() > obj.getBounds().getX())
+                    this.bounds.setPosition(this.bounds.getPosition().add(intersection.getWidth(), 0));
+                else if (this.bounds.getX2() > obj.getBounds().getX())
+                    this.bounds.setPosition(this.bounds.getPosition().subtract(intersection.getWidth(), 0));
+            } else {
+                if (this.bounds.getY() > obj.getBounds().getY())
+                    this.bounds.setPosition(this.bounds.getPosition().add(0, intersection.getHeight()));
+                else if (this.bounds.getY2() > obj.getBounds().getY())
+                    this.bounds.setPosition(this.bounds.getPosition().subtract(0, intersection.getHeight()));
+            }
+        }
     }
 
 

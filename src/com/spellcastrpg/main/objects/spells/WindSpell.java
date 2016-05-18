@@ -2,6 +2,7 @@ package com.spellcastrpg.main.objects.spells;
 
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
+import com.spellcastrpg.main.items.ItemType;
 import com.spellcastrpg.main.objects.Enemy;
 import com.spellcastrpg.main.objects.GameObject;
 import com.spellcastrpg.main.rendering.RGBAColor;
@@ -18,6 +19,14 @@ public class WindSpell extends SpellObject {
         this.power = 1.1;
         this.color = new RGBAColor(0.75, 0.75, 0.75);
         updateBounds();
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        // fire wind spell
+        if (containsModifierType(ItemType.ROSEWOOD_EMBERS))
+            this.color = new RGBAColor(1, 0.5, 0.25);
     }
 
     public double getRange() {
@@ -66,6 +75,9 @@ public class WindSpell extends SpellObject {
                 Enemy enemy = (Enemy) object;
                 // radius - oldRadius = how much larger this spell got
                 enemy.moveAwayFrom(getCenter(), this.radius - oldRadius);
+                // fire wind spell
+                if (containsModifierType(ItemType.ROSEWOOD_EMBERS))
+                    enemy.damage(5);
             }
         }
     }

@@ -56,8 +56,14 @@ public class SpellCast {
         this.init = false;
     }
 
+    public void registerObject(GameObject object) {
+        this.objects.add(object);
+    }
+    public void unregisterObject(GameObject object) {
+        this.objects.remove(object);
+    }
     public List<GameObject> getObjects() {
-        return this.objects;
+        return new ArrayList<>(this.objects);
     }
     public void updateObjects() {
         for (GameObject object : new ArrayList<>(this.objects))

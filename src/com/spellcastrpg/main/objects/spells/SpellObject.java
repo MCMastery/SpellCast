@@ -1,24 +1,31 @@
 package com.spellcastrpg.main.objects.spells;
 
-import com.spellcastrpg.main.items.Item;
+import com.spellcastrpg.main.items.ItemObject;
+import com.spellcastrpg.main.items.ItemType;
 import com.spellcastrpg.main.objects.LivingObject;
 import com.spellcastrpg.main.rendering.Renderer;
 
 import java.util.Set;
 
 public abstract class SpellObject extends LivingObject implements Spell {
-    private Set<Item> modifiers;
+    private Set<ItemObject> modifiers;
 
     public SpellObject() {
         this.modifiers = null;
     }
 
-    public Set<Item> getModifiers() {
+    public Set<ItemObject> getModifiers() {
         return this.modifiers;
     }
+    public boolean containsModifierType(ItemType type) {
+        for (ItemObject item : this.modifiers)
+            if (item.getType() == type)
+                return true;
+        return false;
+    }
 
-
-    public void summon(Set<Item> modifiers) {
+@Override
+    public void summon(Set<ItemObject> modifiers) {
         this.modifiers = modifiers;
         init();
     }

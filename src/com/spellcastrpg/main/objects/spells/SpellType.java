@@ -1,13 +1,14 @@
 package com.spellcastrpg.main.objects.spells;
 
 import com.spellcastrpg.main.items.Item;
+import com.spellcastrpg.main.items.ItemObject;
 
 import java.util.Set;
 
 public enum SpellType implements Spell {
     WIND(0.5, null) {
         @Override
-        public void summon(Set<Item> modifiers) {
+        public void summon(Set<ItemObject> modifiers) {
             new WindSpell().summon(modifiers);
         }
     };

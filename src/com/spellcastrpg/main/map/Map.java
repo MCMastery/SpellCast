@@ -39,6 +39,11 @@ public class Map extends GameObject {
             this.tiles.get(x).add(new RenderedMapTile(MapTile.AIR));
         this.tiles.get(x).set(y, new RenderedMapTile(tile));
     }
+    public RenderedMapTile getTileAt(Vector2d position) {
+        int x = (int) Math.floor(position.getX() / MapTile.WIDTH);
+        int y = (int) Math.floor(position.getY() / MapTile.HEIGHT);
+        return getTileAt(x, y);
+    }
 
 
     public Rectangle getPixelSize() {
