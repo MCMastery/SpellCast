@@ -1,5 +1,7 @@
 package com.spellcastrpg.main.items;
 
+import com.spellcastrpg.main.objects.timers.DelayTimer;
+
 public class ItemObject implements Item {
     private final ItemType type;
     private boolean canUse;
@@ -22,14 +24,13 @@ public class ItemObject implements Item {
     public void use() {
         if (this.type.getUsesPerSecond() > 0) {
             this.canUse = false;
-            new Thread(() -> {
-                try {
-                    Thread.sleep((long) (1000 / this.type.getUsesPerSecond()));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            // 1.0 / since its uses PER SECOND, not seconds delay between uses
+            new DelayTimer(1.0 / this.type.getUsesPerSecond()) {
+                @Override
+                public void run() {
+                    canUse = true;
                 }
-                this.canUse = true;
-            }).start();
+            }.init();
         }
     }
 }
