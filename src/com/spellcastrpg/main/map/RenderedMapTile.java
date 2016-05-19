@@ -1,5 +1,8 @@
 package com.spellcastrpg.main.map;
 
+import com.spellcastrpg.main.objects.Collider;
+import com.spellcastrpg.main.geometry.Rectangle;
+
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -8,12 +11,14 @@ import java.util.Random;
 /**
  * Created by laser_000 on 5/14/2016.
  */
-public class RenderedMapTile {
+public class RenderedMapTile extends Collider {
     private MapTile tile;
     private int rotation;
     private BufferedImage rotatedImage;
 
     public RenderedMapTile(MapTile tile) {
+        setBounds(new Rectangle(tile.getImage().getWidth(), tile.getImage().getHeight()));
+        // our position will be set by Map.java
         setTile(tile);
     }
 

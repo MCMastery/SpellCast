@@ -6,10 +6,7 @@ import com.spellcastrpg.main.objects.GameObject;
 import com.spellcastrpg.main.rendering.Renderer;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +14,7 @@ import java.util.List;
  * Created by laser_000 on 5/14/2016.
  */
 public class Map extends GameObject {
-    private List<List<RenderedMapTile>> tiles;
+    private List<RenderedMapTile> tiles;
 
     public Map() {
         this.tiles = new ArrayList<>();
@@ -25,31 +22,42 @@ public class Map extends GameObject {
         setLayer(Integer.MIN_VALUE);
     }
 
+    public List<RenderedMapTile> getTiles() {
+        return this.tiles;
+    }
     public RenderedMapTile getTileAt(int x, int y) {
-        try {
-            return this.tiles.get(x).get(y);
-        } catch (IndexOutOfBoundsException e) {
-            return null;
-        }
+        Vector2d position = new Vector2d(x * MapTile.WIDTH, y * MapTile.HEIGHT);
+        return getTileAt(position);
     }
     public void setTileAt(int x, int y, MapTile tile) {
-        while (this.tiles.size() <= x)
-            this.tiles.add(new ArrayList<>());
-        while (this.tiles.get(x).size() <= y)
-            this.tiles.get(x).add(new RenderedMapTile(MapTile.AIR));
-        this.tiles.get(x).set(y, new RenderedMapTile(tile));
+        RenderedMapTile rmt = getTileAt(x, y);
+        if (rmt == null) {
+            rmt = new RenderedMapTile(tile);
+            rmt.setPosition(new Vector2d(x * MapTile.WIDTH, y * MapTile.HEIGHT));
+            this.tiles.add(rmt);
+        }
+        rmt.setTile(tile);
     }
     public RenderedMapTile getTileAt(Vector2d position) {
-        int x = (int) Math.floor(position.getX() / MapTile.WIDTH);
-        int y = (int) Math.floor(position.getY() / MapTile.HEIGHT);
-        return getTileAt(x, y);
+        for (RenderedMapTile tile : this.tiles)
+            if (tile.getBounds().contains(position))
+                return tile;
+        return null;
     }
 
 
     public Rectangle getPixelSize() {
         if (this.tiles.size() == 0)
             return new Rectangle();
-        return new Rectangle(0, 0, this.tiles.size() * MapTile.WIDTH, this.tiles.get(0).size() * MapTile.HEIGHT);
+        double largestX = 0;
+        double largestY = 0;
+        for (RenderedMapTile rmt : this.tiles) {
+            if (rmt.getBounds().getX2() > largestX)
+                largestX = rmt.getBounds().getX2();
+            if (rmt.getBounds().getY2() > largestY)
+                largestY = rmt.getBounds().getY2();
+        }
+        return new Rectangle(largestX, largestY);
     }
 
 
@@ -83,12 +91,8 @@ public class Map extends GameObject {
 
     @Override
     public void render(Renderer r) {
-        for (int x = 0; x < this.tiles.size(); x++) {
-            for (int y = 0; y < this.tiles.get(x).size(); y++) {
-                RenderedMapTile tile = getTileAt(x, y);
-                if (tile.getRotatedImage() != null)
-                    r.drawImage(tile.getRotatedImage(), new Vector2d(x * MapTile.WIDTH, y * MapTile.HEIGHT));
-            }
-        }
+        for (RenderedMapTile tile : this.tiles)
+            if (tile.getRotatedImage() != null)
+                r.drawImage(tile.getRotatedImage(), tile.getPosition());
     }
 }

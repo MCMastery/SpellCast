@@ -20,12 +20,12 @@ public abstract class DelayTimer extends Timer {
 
     @Override
     public void update() {
-        super.update();
         if (this.updatesLeft <= 0) {
             run();
             destroy();
             return;
         }
         this.updatesLeft--;
+        super.update();
     }
 }

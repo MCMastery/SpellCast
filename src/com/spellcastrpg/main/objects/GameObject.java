@@ -2,51 +2,27 @@ package com.spellcastrpg.main.objects;
 
 import com.spellcastrpg.main.Key;
 import com.spellcastrpg.main.SpellCast;
-import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
+import com.spellcastrpg.main.map.RenderedMapTile;
 import com.spellcastrpg.main.rendering.Renderer;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by laser_000 on 5/14/2016.
  */
-public class GameObject {
-    private Rectangle bounds;
+public class GameObject extends Collider {
     private boolean alive, followCamera;
     private int layer;
 
     public GameObject() {
-        this.bounds = new Rectangle();
         this.alive = false;
         this.layer = 0;
         // does this object always appear at a certain place on the screen, regardless of where the camera is?
         this.followCamera = false;
     }
-
-    public Rectangle getBounds() {
-        return this.bounds;
-    }
-    public void setBounds(Rectangle bounds) {
-        this.bounds = bounds;
-    }
-    public Vector2d getPosition() {
-        return this.bounds.getPosition();
-    }
-    public void setPosition(Vector2d center) {
-        this.bounds = this.bounds.setPosition(center);
-    }
-    public Vector2d getCenter() {
-        return this.bounds.getCenter();
-    }
-    public void setCenter(Vector2d center) {
-        this.bounds = this.bounds.setCenter(center);
-    }
-    public boolean intersects(GameObject other) {
-        return this.bounds.intersects(other.getBounds());
-    }
+    
     public boolean isAlive() {
         return this.alive;
     }
@@ -64,12 +40,17 @@ public class GameObject {
     }
 
 
+    public boolean inCameraView() {
+        return getBounds().intersects(SpellCast.INSTANCE.getCameraView());
+    }
+
+
     public void init() {
         SpellCast.INSTANCE.registerObject(this);
         this.alive = true;
     }
     public void update() {
-        for (GameObject object : getCollisions())
+        for (Collider object : getCollisions())
             collide(object);
     }
     public void destroy() {
@@ -80,33 +61,19 @@ public class GameObject {
 
     }
 
-    public Set<GameObject> getCollisions() {
-        Set<GameObject> objects = new HashSet<>();
+
+    public Set<Collider> getCollisions() {
+        Set<Collider> objects = new HashSet<>();
         for (GameObject object : SpellCast.INSTANCE.getObjects())
             if (!this.equals(object) && getBounds().intersects(object.getBounds()))
                 objects.add(object);
+        for (RenderedMapTile mapTile : SpellCast.INSTANCE.getMap().getTiles())
+            if (getBounds().intersects(mapTile.getBounds()))
+                objects.add(mapTile);
         return objects;
     }
 
-    public void cancelCollision(GameObject obj) {
-        if (obj.getBounds().intersects(this.bounds)) {
-            Rectangle intersection = obj.getBounds().getIntersection(this.bounds);
-            if (intersection.getWidth() < intersection.getHeight()) {
-                if (this.bounds.getX() > obj.getBounds().getX())
-                    this.bounds.setPosition(this.bounds.getPosition().add(intersection.getWidth(), 0));
-                else if (this.bounds.getX2() > obj.getBounds().getX())
-                    this.bounds.setPosition(this.bounds.getPosition().subtract(intersection.getWidth(), 0));
-            } else {
-                if (this.bounds.getY() > obj.getBounds().getY())
-                    this.bounds.setPosition(this.bounds.getPosition().add(0, intersection.getHeight()));
-                else if (this.bounds.getY2() > obj.getBounds().getY())
-                    this.bounds.setPosition(this.bounds.getPosition().subtract(0, intersection.getHeight()));
-            }
-        }
-    }
-
-
-    public void collide(GameObject other) {
+    public void collide(Collider other) {
 
     }
     public void keyDown(Key key) {

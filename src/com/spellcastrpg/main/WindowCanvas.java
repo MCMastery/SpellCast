@@ -26,8 +26,7 @@ public class WindowCanvas extends JComponent {
         Renderer r = new Renderer(g2d);
 
         // clamp camera to inside of map
-        Rectangle cameraClamp = SpellCast.INSTANCE.getMapSize().expand(
-                -SpellCast.INSTANCE.getWindowSize().getWidth(), -SpellCast.INSTANCE.getWindowSize().getHeight());
+        Rectangle cameraClamp = SpellCast.INSTANCE.getMapSize().expand(-SpellCast.INSTANCE.getWindowSize().getWidth(), -SpellCast.INSTANCE.getWindowSize().getHeight());
         SpellCast.INSTANCE.setCameraPosition(SpellCast.INSTANCE.getCameraPosition().clamp(cameraClamp));
 
         // sort objects by layers

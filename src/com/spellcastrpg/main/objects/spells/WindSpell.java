@@ -59,7 +59,6 @@ public class WindSpell extends SpellObject {
 
     @Override
     public void update() {
-        super.update();
         this.color = this.color.setA(this.color.getA() - (this.power / this.range * 2.0));
         if (this.radius >= this.range && this.color.getA() <= 0)
             destroy();
@@ -80,6 +79,7 @@ public class WindSpell extends SpellObject {
                     enemy.damage(5);
             }
         }
+        super.update();
     }
 
     @Override

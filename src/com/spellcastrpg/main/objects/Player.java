@@ -9,15 +9,12 @@ import com.spellcastrpg.main.items.Item;
 import com.spellcastrpg.main.items.ItemObject;
 import com.spellcastrpg.main.items.RosewoodEmbers;
 import com.spellcastrpg.main.items.Wand;
-import com.spellcastrpg.main.map.MapTile;
 import com.spellcastrpg.main.map.RenderedMapTile;
 import com.spellcastrpg.main.objects.spells.SpellType;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
 
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 
 /**
  * Created by laser_000 on 5/14/2016.
@@ -55,7 +52,6 @@ public class Player extends LivingObject {
     }
     @Override
     public void update() {
-        super.update();
         Vector2d movement = Vector2d.ZERO;
         if (Input.INSTANCE.keyDown(Key.W))
             movement = movement.add(0, -1);
@@ -69,14 +65,11 @@ public class Player extends LivingObject {
         setPosition(getPosition().add(movement));
         setBounds(getBounds().clamp(SpellCast.INSTANCE.getMapSize()));
         SpellCast.INSTANCE.setCameraPosition(getCenter());
-
-        RenderedMapTile rmt = SpellCast.INSTANCE.getMap().getTileAt(getCenter());
-        if (rmt.getTile() != MapTile.STONE)
-            rmt.setTile(MapTile.STONE);
+        super.update();
     }
     @Override
-    public void collide(GameObject object) {
-        if (object instanceof Enemy)
+    public void collide(Collider object) {
+        if (object instanceof RenderedMapTile && ((RenderedMapTile) object).getTile().isSolid())
             cancelCollision(object);
     }
     @Override

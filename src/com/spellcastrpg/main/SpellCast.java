@@ -34,10 +34,12 @@ public class SpellCast {
 
         INSTANCE.player = new Player();
         INSTANCE.player.init();
+
         Thread thread = new Thread(new GameLoop());
         thread.setDaemon(true);
         thread.start();
         INSTANCE.init = true;
+
         for (int i = 0; i < 10; i++)
             new TestEnemy().init();
     }
@@ -66,7 +68,7 @@ public class SpellCast {
         return new ArrayList<>(this.objects);
     }
     public void updateObjects() {
-        for (GameObject object : new ArrayList<>(this.objects))
+        for (GameObject object : getObjects())
             object.update();
     }
     public Window getWindow() {
@@ -84,6 +86,9 @@ public class SpellCast {
     }
     public void setCameraPosition(Vector2d cameraPosition) {
         this.cameraPosition = cameraPosition;
+    }
+    public Rectangle getCameraView() {
+        return getWindowSize().setCenter(this.cameraPosition);
     }
 
 
@@ -115,12 +120,12 @@ public class SpellCast {
     }
 
     public void renderCameraFollowObjects(Renderer r) {
-        for (GameObject object : new ArrayList<>(this.objects))
+        for (GameObject object : getObjects())
             if (object.followsCamera())
                 object.render(r);
     }
     public void renderObjects(Renderer r) {
-        for (GameObject object : new ArrayList<>(this.objects))
+        for (GameObject object : getObjects())
             if (!object.followsCamera())
                 object.render(r);
     }

@@ -13,11 +13,11 @@ public class TestEnemy extends Enemy {
     }
     @Override
     public void update() {
-        super.update();
         moveToward(SpellCast.INSTANCE.getPlayer().getCenter());
+        super.update();
     }
     @Override
-    public void collide(GameObject object) {
+    public void collide(Collider object) {
         if (object instanceof Player)
             ((Player) object).damage(0.1);
     }

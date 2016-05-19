@@ -27,10 +27,7 @@ public class Inventory extends GameObject {
         this.borderWeight = 1;
         this.radius = 10;
 
-        Rectangle bounds = new Rectangle(0, 0, this.size * 64, 64)
-                .setCenter(SpellCast.INSTANCE.getWindowCenter())
-                .setY(0);
-        setBounds(bounds);
+        updateBounds();
         setFollowCamera(true);
     }
 
@@ -118,12 +115,21 @@ public class Inventory extends GameObject {
     }
 
 
+    public void updateBounds() {
+        Rectangle bounds = new Rectangle(0, 0, this.size * 64, 64)
+                .setCenter(SpellCast.INSTANCE.getWindowCenter())
+                .setY(0);
+        setBounds(bounds);
+    }
+
+
     @Override
     public void update() {
-        super.update();
+        updateBounds();
         ItemObject selectedItem = getSelectedItem();
         if (selectedItem != null && selectedItem.canUse() && Input.INSTANCE.mouseDown(Input.MOUSE_LEFT))
             selectedItem.use();
+        super.update();
     }
 
     @Override
