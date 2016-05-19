@@ -2,6 +2,8 @@ package com.spellcastrpg.main;
 
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
+import com.spellcastrpg.main.gui.GUIText;
+import com.spellcastrpg.main.gui.GUITextContainer;
 import com.spellcastrpg.main.map.Map;
 import com.spellcastrpg.main.objects.GameObject;
 import com.spellcastrpg.main.objects.Player;
@@ -42,6 +44,16 @@ public class SpellCast {
 
         for (int i = 0; i < 10; i++)
             new TestEnemy().init();
+
+
+        GUITextContainer test = new GUITextContainer();
+        GUIText text = new GUIText("This is a lot of text for such a small, tiny little container, don't you think? If you said yes, I would definitely agree with you. This is an abomination! " +
+                "How could Java be expected to make this look nice? We are doing a great deal of harm by having this much text in such a small container! In fact, to get my point across, I'll say it again. " +
+                "This is a lot of text for such a small, tiny little container, don't you think? If you said yes, I would definitely agree with you. This is an abomination! " +
+                "How could Java be expected to make this look nice? We are doing a great deal of harm by having this much text in such a small container!");
+        test.setText(text);
+        test.setBounds(new Rectangle(0, 0, 450, 450));
+        test.init();
     }
 
     private List<GameObject> objects;
@@ -53,6 +65,7 @@ public class SpellCast {
 
     private SpellCast() {
         this.objects = new ArrayList<>();
+        this.objects = Collections.synchronizedList(this.objects);
         this.window = new Window();
         this.cameraPosition = Vector2d.ZERO;
         this.init = false;

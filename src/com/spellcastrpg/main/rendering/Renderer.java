@@ -4,8 +4,11 @@ import com.spellcastrpg.main.geometry.*;
 import com.spellcastrpg.main.geometry.Rectangle;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by laser_000 on 5/14/2016.
@@ -30,8 +33,7 @@ public class Renderer {
         Stroke oldStroke = this.g2d.getStroke();
         this.g2d.setStroke(new BasicStroke(Double.valueOf(thickness).floatValue()));
         this.g2d.setColor(color.toColor());
-        this.g2d.drawRect((int) Math.round(rect.getX()), (int) Math.round(rect.getY()),
-                (int) Math.round(rect.getWidth()), (int) Math.round(rect.getHeight()));
+        this.g2d.drawRect((int) Math.round(rect.getX()), (int) Math.round(rect.getY()), (int) Math.round(rect.getWidth()), (int) Math.round(rect.getHeight()));
         this.g2d.setStroke(oldStroke);
     }
     public void fillRoundedRect(Rectangle rect, double arcWidth, double arcHeight, RGBAColor color) {
@@ -60,18 +62,21 @@ public class Renderer {
         Stroke oldStroke = this.g2d.getStroke();
         this.g2d.setStroke(new BasicStroke(Double.valueOf(thickness).floatValue()));
         this.g2d.setColor(color.toColor());
-        this.g2d.drawOval((int) Math.round(bounds.getX()), (int) Math.round(bounds.getY()),
-                (int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight()));
+        this.g2d.drawOval((int) Math.round(bounds.getX()), (int) Math.round(bounds.getY()), (int) Math.round(bounds.getWidth()), (int) Math.round(bounds.getHeight()));
         this.g2d.setStroke(oldStroke);
     }
 
 
+
+    public Rectangle getTextBounds(String text, Font font) {
+        Rectangle2D rect = this.g2d.getFontMetrics(font).getStringBounds(text, this.g2d);
+        return new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    }
     public void drawText(String text, Font font, Vector2d position, RGBAColor color) {
         this.g2d.setColor(color.toColor());
         this.g2d.setFont(font);
         FontMetrics metric = this.g2d.getFontMetrics(font);
-        this.g2d.drawString(text, (int) Math.round(position.getX()),
-                (int) Math.round(position.getY()) + metric.getAscent() - metric.getDescent() - metric.getLeading());
+        this.g2d.drawString(text, (int) Math.round(position.getX()), (int) Math.round(position.getY()) + metric.getAscent() - metric.getDescent() - metric.getLeading());
     }
     public void drawTextCentered(String text, Font font, Rectangle bounds, RGBAColor color) {
         this.g2d.setColor(color.toColor());
@@ -81,6 +86,40 @@ public class Renderer {
         double y = (fm.getAscent() + (bounds.getHeight() - (fm.getAscent() + fm.getDescent())) / 2.0) + bounds.getY();
         this.g2d.drawString(text, (int) Math.round(x), (int) Math.round(y));
     }
+    // returns the bounds the text used up
+    //todo this returns a little extra height for some reason (not a lot)
+    public Rectangle drawTextWordWrap(String text, Font font, Rectangle bounds, double lineSpacing, RGBAColor color) {
+        List<String> lines = wordWrap(text, font, bounds);
+        double x = bounds.getX(), y = bounds.getY();
+        for (String line : lines) {
+            Rectangle lineBounds = getTextBounds(line, font);
+            drawText(line, font, new Vector2d(x, y), color);
+            y += lineBounds.getHeight() + lineSpacing;
+        }
+        return new Rectangle(bounds.getPosition(), bounds.getWidth(), y - bounds.getY() - lineSpacing);
+    }
+    public List<String> wordWrap(String text, Font font, Rectangle bounds) {
+        // split by spaces & keep spaces at start of each word
+        String[] words = text.split("(?<= )");
+        List<String> lines = new ArrayList<>();
+        double lineSpaceLeft = bounds.getWidth();
+        String line = "";
+        for (String word : words) {
+            double width = getTextBounds(word, font).getWidth();
+            if (width > lineSpaceLeft) {
+                lines.add(line);
+                // add word to next line
+                lineSpaceLeft = bounds.getWidth();
+                line = word;
+            } else
+                line += word;
+            lineSpaceLeft -= width;
+        }
+        if (!line.isEmpty())
+            lines.add(line);
+        return lines;
+    }
+
 
 
     public void drawImage(BufferedImage image, Vector2d position) {

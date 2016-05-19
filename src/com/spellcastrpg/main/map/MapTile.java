@@ -13,7 +13,7 @@ public enum MapTile {
     STONE("stone.png", true, true)
     ;
 
-    public static final int WIDTH = 32, HEIGHT = 32;
+    public static final int SIZE = 32;
 
     private final BufferedImage image;
     private final boolean rotate, solid;

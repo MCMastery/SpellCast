@@ -1,4 +1,4 @@
-package com.spellcastrpg.main.objects;
+package com.spellcastrpg.main.gui;
 
 import com.spellcastrpg.main.Input;
 import com.spellcastrpg.main.SpellCast;
@@ -11,24 +11,17 @@ import com.spellcastrpg.main.rendering.Renderer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Inventory extends GameObject {
+public class Inventory extends GUIContainer {
     private Map<Integer, ItemObject> contents;
     private int selection, size;
-    private RGBAColor background, border, selectionColor;
-    private double radius, borderWeight;
+    private RGBAColor  selectionColor;
 
     public Inventory() {
         this.contents = new HashMap<>();
         this.selection = 0;
         this.size = 10;
-        this.background = new RGBAColor(0.75, 0.75, 0.75, 0.75);
-        this.border = new RGBAColor(0, 0, 0, 0.75);
         this.selectionColor = new RGBAColor(0, 1, 0, 0.25);
-        this.borderWeight = 1;
-        this.radius = 10;
-
         updateBounds();
-        setFollowCamera(true);
     }
 
     public Map<Integer, ItemObject> getContents() {
@@ -79,33 +72,7 @@ public class Inventory extends GameObject {
     public ItemObject getSelectedItem() {
         return getItem(this.selection);
     }
-
-
-    public RGBAColor getBackground() {
-        return this.background;
-    }
-    public void setBackground(RGBAColor background) {
-        this.background = background;
-    }
-    public double getRadius() {
-        return this.radius;
-    }
-    public void setRadius(double radius) {
-        this.radius = radius;
-    }
-
-    public RGBAColor getBorder() {
-        return this.border;
-    }
-    public void setBorder(RGBAColor border) {
-        this.border = border;
-    }
-    public double getBorderWeight() {
-        return this.borderWeight;
-    }
-    public void setBorderWeight(double borderWeight) {
-        this.borderWeight = borderWeight;
-    }
+    
 
     public RGBAColor getSelectionColor() {
         return this.selectionColor;
@@ -116,7 +83,7 @@ public class Inventory extends GameObject {
 
 
     public void updateBounds() {
-        Rectangle bounds = new Rectangle(0, 0, this.size * 64, 64)
+        Rectangle bounds = new Rectangle(0, 0, this.size * ItemObject.SIZE, ItemObject.SIZE)
                 .setCenter(SpellCast.INSTANCE.getWindowCenter())
                 .setY(0);
         setBounds(bounds);
@@ -139,15 +106,16 @@ public class Inventory extends GameObject {
 
     @Override
     public void render(Renderer r) {
-        r.fillRoundedRect(getBounds(), this.radius, this.radius, this.background);
-        Vector2d selectionPos = getBounds().getPosition().add(this.selection * 64, 0);
+        // don't render the GUIContainer - we want the border to be rendered on top.
+        r.fillRoundedRect(getBounds(), getRadius(), getRadius(), getBackground());
+        Vector2d selectionPos = getBounds().getPosition().add(this.selection * ItemObject.SIZE, 0);
         for (int slot = 0; slot < this.size; slot++) {
             ItemObject item = getItem(slot);
             if (item == null || item.getType().getImage() == null)
                 continue;
-            r.drawRoundedImage(item.getType().getImage(), this.radius, this.radius, new Vector2d(getBounds().getX() + slot * 64, getBounds().getY()));
+            r.drawRoundedImage(item.getType().getImage(), getRadius(), getRadius(), new Vector2d(getBounds().getX() + slot * ItemObject.SIZE, getBounds().getY()));
         }
-        r.fillRoundedRect(new Rectangle(selectionPos, 64, 64), this.radius, this.radius, this.selectionColor);
-        r.drawRoundedRect(getBounds(), this.radius, this.radius, this.borderWeight, this.border);
+        r.fillRoundedRect(new Rectangle(selectionPos, ItemObject.SIZE, ItemObject.SIZE), getRadius(), getRadius(), this.selectionColor);
+        r.drawRoundedRect(getBounds(), getRadius(), getRadius(), getBorderWeight(), getBorder());
     }
 }

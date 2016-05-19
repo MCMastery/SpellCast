@@ -24,7 +24,7 @@ public abstract class SpellObject extends LivingObject implements Spell {
         return false;
     }
 
-@Override
+    @Override
     public void summon(Set<ItemObject> modifiers) {
         this.modifiers = modifiers;
         init();

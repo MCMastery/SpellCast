@@ -3,7 +3,7 @@ package com.spellcastrpg.main.items;
 import com.spellcastrpg.main.objects.timers.DelayTimer;
 
 public class ItemObject implements Item {
-    public static final int WIDTh = 64, HEIGHT = 64;
+    public static final int SIZE = 64;
     private final ItemType type;
     private boolean canUse;
 

@@ -5,6 +5,7 @@ import com.spellcastrpg.main.Key;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
+import com.spellcastrpg.main.gui.Inventory;
 import com.spellcastrpg.main.items.Item;
 import com.spellcastrpg.main.items.ItemObject;
 import com.spellcastrpg.main.items.RosewoodEmbers;

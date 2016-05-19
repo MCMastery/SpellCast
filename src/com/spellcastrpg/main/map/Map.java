@@ -26,14 +26,14 @@ public class Map extends GameObject {
         return this.tiles;
     }
     public RenderedMapTile getTileAt(int x, int y) {
-        Vector2d position = new Vector2d(x * MapTile.WIDTH, y * MapTile.HEIGHT);
+        Vector2d position = new Vector2d(x * MapTile.SIZE, y * MapTile.SIZE);
         return getTileAt(position);
     }
     public void setTileAt(int x, int y, MapTile tile) {
         RenderedMapTile rmt = getTileAt(x, y);
         if (rmt == null) {
             rmt = new RenderedMapTile(tile);
-            rmt.setPosition(new Vector2d(x * MapTile.WIDTH, y * MapTile.HEIGHT));
+            rmt.setPosition(new Vector2d(x * MapTile.SIZE, y * MapTile.SIZE));
             this.tiles.add(rmt);
         }
         rmt.setTile(tile);
