@@ -79,7 +79,6 @@ public class WindSpell extends SpellObject {
                     enemy.damage(5);
             }
         }
-        super.update();
     }
 
     @Override

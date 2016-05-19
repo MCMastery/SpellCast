@@ -14,7 +14,6 @@ public class TestEnemy extends Enemy {
     @Override
     public void update() {
         moveToward(SpellCast.INSTANCE.getPlayer().getCenter());
-        super.update();
     }
     @Override
     public void collide(Collider object) {

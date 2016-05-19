@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * Created by laser_000 on 5/14/2016.
  */
-public abstract class LivingObject extends GameObject {
+public class LivingObject extends GameObject {
     private double speed;
     private double health, maxHealth;
 

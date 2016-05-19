@@ -1,4 +1,4 @@
-package com.spellcastrpg.main.gui;
+package com.spellcastrpg.main.objects.gui;
 
 import com.spellcastrpg.main.Input;
 import com.spellcastrpg.main.SpellCast;
@@ -96,7 +96,6 @@ public class Inventory extends GUIContainer {
         ItemObject selectedItem = getSelectedItem();
         if (selectedItem != null && selectedItem.canUse() && Input.INSTANCE.mouseDown(Input.MOUSE_LEFT))
             selectedItem.use();
-        super.update();
     }
 
     @Override

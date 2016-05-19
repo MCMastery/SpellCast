@@ -2,8 +2,8 @@ package com.spellcastrpg.main;
 
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
-import com.spellcastrpg.main.gui.GUIText;
-import com.spellcastrpg.main.gui.GUITextContainer;
+import com.spellcastrpg.main.objects.gui.GUIText;
+import com.spellcastrpg.main.objects.gui.GUITextContainer;
 import com.spellcastrpg.main.map.Map;
 import com.spellcastrpg.main.objects.GameObject;
 import com.spellcastrpg.main.objects.Player;
@@ -83,6 +83,10 @@ public class SpellCast {
     public void updateObjects() {
         for (GameObject object : getObjects())
             object.update();
+    }
+    public void collisionUpdateObjects() {
+        for (GameObject object : getObjects())
+            object.collisionUpdate();
     }
     public Window getWindow() {
         return this.window;

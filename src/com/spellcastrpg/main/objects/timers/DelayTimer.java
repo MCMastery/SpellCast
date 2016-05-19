@@ -26,6 +26,5 @@ public abstract class DelayTimer extends Timer {
             return;
         }
         this.updatesLeft--;
-        super.update();
     }
 }

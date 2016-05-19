@@ -50,6 +50,9 @@ public class GameObject extends Collider {
         this.alive = true;
     }
     public void update() {
+
+    }
+    public void collisionUpdate() {
         for (Collider object : getCollisions())
             collide(object);
     }

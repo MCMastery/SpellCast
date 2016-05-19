@@ -1,4 +1,4 @@
-package com.spellcastrpg.main.gui;
+package com.spellcastrpg.main.objects.gui;
 
 import com.spellcastrpg.main.objects.GameObject;
 

@@ -7,7 +7,7 @@ import com.spellcastrpg.main.rendering.Renderer;
 
 import java.util.Set;
 
-public abstract class SpellObject extends LivingObject implements Spell {
+public class SpellObject extends LivingObject implements Spell {
     private Set<ItemObject> modifiers;
 
     public SpellObject() {
