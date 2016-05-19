@@ -92,8 +92,20 @@ public class Renderer {
         List<String> lines = wordWrap(text, font, bounds);
         double x = bounds.getX(), y = bounds.getY();
         for (String line : lines) {
-            Rectangle lineBounds = getTextBounds(line, font);
             drawText(line, font, new Vector2d(x, y), color);
+            Rectangle lineBounds = getTextBounds(line, font);
+            y += lineBounds.getHeight() + lineSpacing;
+        }
+        return new Rectangle(bounds.getPosition(), bounds.getWidth(), y - bounds.getY() - lineSpacing);
+    }
+    // returns the bounds the text used up
+    //todo this returns a little extra height for some reason (not a lot)
+    public Rectangle drawTextWordWrapCentered(String text, Font font, Rectangle bounds, double lineSpacing, RGBAColor color) {
+        List<String> lines = wordWrap(text, font, bounds);
+        double x = bounds.getX(), y = bounds.getY();
+        for (String line : lines) {
+            Rectangle lineBounds = getTextBounds(line, font);
+            drawTextCentered(line, font, new Rectangle(new Vector2d(x, y), bounds.getWidth(), lineBounds.getHeight()), color);
             y += lineBounds.getHeight() + lineSpacing;
         }
         return new Rectangle(bounds.getPosition(), bounds.getWidth(), y - bounds.getY() - lineSpacing);

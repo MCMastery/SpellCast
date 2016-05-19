@@ -7,9 +7,15 @@ import java.awt.*;
 
 public class GUIText extends GUIObject {
     public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 14);
+
+    public enum Alignment {
+        LEFT, CENTER;
+    }
+
     private String text;
     private Font font;
     private RGBAColor color;
+    private Alignment alignment;
     private boolean wordWrap;
     private double lineSpacing;
 
@@ -30,6 +36,7 @@ public class GUIText extends GUIObject {
         this.font = font;
         this.color = color;
         this.wordWrap = true;
+        this.alignment = Alignment.LEFT;
         this.lineSpacing = 7.5;
     }
 
@@ -51,6 +58,12 @@ public class GUIText extends GUIObject {
     public void setColor(RGBAColor color) {
         this.color = color;
     }
+    public Alignment getAlignment() {
+        return this.alignment;
+    }
+    public void setAlignment(Alignment alignment) {
+        this.alignment = alignment;
+    }
     public boolean useWordWrap() {
         return this.wordWrap;
     }
@@ -66,9 +79,16 @@ public class GUIText extends GUIObject {
 
     @Override
     public void render(Renderer r) {
-        if (this.wordWrap)
-            r.drawTextWordWrap(this.text, this.font, getBounds(), this.lineSpacing, this.color);
-        else
-            r.drawText(this.text, this.font, getPosition(), this.color);
+        if (this.wordWrap) {
+            if (this.alignment == Alignment.LEFT)
+                r.drawTextWordWrap(this.text, this.font, getBounds(), this.lineSpacing, this.color);
+            else if (this.alignment == Alignment.CENTER)
+                r.drawTextWordWrapCentered(this.text, this.font, getBounds(), this.lineSpacing, this.color);
+        } else {
+            if (this.alignment == Alignment.LEFT)
+                r.drawText(this.text, this.font, getPosition(), this.color);
+            else if (this.alignment == Alignment.CENTER)
+                r.drawTextCentered(this.text, this.font, getBounds(), this.color);
+        }
     }
 }

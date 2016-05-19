@@ -51,6 +51,7 @@ public class SpellCast {
                 "How could Java be expected to make this look nice? We are doing a great deal of harm by having this much text in such a small container! In fact, to get my point across, I'll say it again. " +
                 "This is a lot of text for such a small, tiny little container, don't you think? If you said yes, I would definitely agree with you. This is an abomination! " +
                 "How could Java be expected to make this look nice? We are doing a great deal of harm by having this much text in such a small container!");
+        text.setAlignment(GUIText.Alignment.CENTER);
         test.setText(text);
         test.setBounds(new Rectangle(0, 0, 450, 450));
         test.init();
