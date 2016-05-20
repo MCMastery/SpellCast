@@ -15,12 +15,14 @@ public class Inventory extends GUIContainer {
     private Map<Integer, ItemObject> contents;
     private int selection, size;
     private RGBAColor  selectionColor;
+    private ItemInfoBox itemInfo;
 
     public Inventory() {
         this.contents = new HashMap<>();
         this.selection = 0;
         this.size = 10;
         this.selectionColor = new RGBAColor(0, 1, 0, 0.25);
+        this.itemInfo = null;
         updateBounds();
     }
 
@@ -72,7 +74,7 @@ public class Inventory extends GUIContainer {
     public ItemObject getSelectedItem() {
         return getItem(this.selection);
     }
-    
+
 
     public RGBAColor getSelectionColor() {
         return this.selectionColor;
@@ -96,6 +98,34 @@ public class Inventory extends GUIContainer {
         ItemObject selectedItem = getSelectedItem();
         if (selectedItem != null && selectedItem.canUse() && Input.INSTANCE.mouseDown(Input.MOUSE_LEFT))
             selectedItem.use();
+
+        // check if we should show the item info box
+        Vector2d mousePos = Input.INSTANCE.getMouseScreenPosition();
+        if (getBounds().contains(mousePos)) {
+            mousePos = mousePos.subtract(getPosition());
+            int slot = (int) Math.floor(mousePos.getX() / ItemObject.SIZE);
+            showItemInfo(slot);
+        } else {
+            if (this.itemInfo != null) {
+                this.itemInfo.destroy();
+                this.itemInfo = null;
+            }
+        }
+    }
+
+    public void showItemInfo(int slot) {
+        ItemObject item = getItem(slot);
+        if (item == null)
+            return;
+        if (this.itemInfo != null) {
+            this.itemInfo.destroy();
+            this.itemInfo = null;
+        }
+        this.itemInfo = new ItemInfoBox(item);
+        // add ItemObject.SIZE / 2 to make it centered
+        Vector2d position = new Vector2d(slot * ItemObject.SIZE + ItemObject.SIZE / 2 + getPosition().getX(), getBounds().getY2());
+        this.itemInfo.setPosition(position);
+        this.itemInfo.init();
     }
 
     @Override

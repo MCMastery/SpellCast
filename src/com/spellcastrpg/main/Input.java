@@ -33,6 +33,8 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
     }
     public Vector2d getMouseScreenPosition() {
         Point point = SpellCast.INSTANCE.getWindow().getCanvas().getMousePosition();
+        if (point == null)
+            return null;
         return new Vector2d(point.getX(), point.getY());
     }
 

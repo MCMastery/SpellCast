@@ -11,6 +11,8 @@ import java.awt.*;
  * Created by laser_000 on 5/14/2016.
  */
 public class WindowCanvas extends JComponent {
+    private Renderer lastRenderer;
+
     public WindowCanvas() {
         setFocusable(true);
         addKeyListener(Input.INSTANCE);
@@ -24,6 +26,7 @@ public class WindowCanvas extends JComponent {
             return;
         Graphics2D g2d = (Graphics2D) g;
         Renderer r = new Renderer(g2d);
+        this.lastRenderer = r;
 
         // clamp camera to inside of map
         Rectangle cameraClamp = SpellCast.INSTANCE.getMapSize().expand(-SpellCast.INSTANCE.getWindowSize().getWidth(), -SpellCast.INSTANCE.getWindowSize().getHeight());
@@ -44,6 +47,9 @@ public class WindowCanvas extends JComponent {
         SpellCast.INSTANCE.renderCameraFollowObjects(r);
     }
 
+    public Renderer getLastRenderer() {
+        return this.lastRenderer;
+    }
     public Rectangle getRectSize() {
         return new Rectangle(getWidth(), getHeight());
     }

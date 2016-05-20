@@ -34,6 +34,13 @@ public class Rectangle {
         return setPosition(new Vector2d(x, y));
     }
 
+    public Rectangle translate(Vector2d amount) {
+        return setPosition(this.position.add(amount));
+    }
+    public Rectangle translate(double tx, double ty) {
+        return translate(new Vector2d(tx, ty));
+    }
+
     public double getX() {
         return this.position.getX();
     }
@@ -106,6 +113,10 @@ public class Rectangle {
         return toRect2D().contains(other.toRect2D());
     }
     public boolean contains(Vector2d point) {
+        // we need to check this, when we use this method to check if the mouse is within a rectangle
+        // the mouse pos will be null if it is outside the screen
+        if (point == null)
+            return false;
         return toRect2D().contains(point.toPoint2D());
     }
     public Rectangle getIntersection(Rectangle other) {

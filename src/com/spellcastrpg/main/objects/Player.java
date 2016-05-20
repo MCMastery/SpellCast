@@ -63,7 +63,7 @@ public class Player extends LivingObject {
         if (Input.INSTANCE.keyDown(Key.D))
             movement = movement.add(1, 0);
         movement = movement.getNormalized().multiply(getSpeed());
-        setPosition(getPosition().add(movement));
+        translate(movement);
         setBounds(getBounds().clamp(SpellCast.INSTANCE.getMapSize()));
         SpellCast.INSTANCE.setCameraPosition(getCenter());
     }

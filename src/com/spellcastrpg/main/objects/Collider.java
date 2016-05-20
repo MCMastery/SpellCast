@@ -19,14 +19,20 @@ public class Collider {
     public Vector2d getPosition() {
         return this.bounds.getPosition();
     }
-    public void setPosition(Vector2d center) {
-        this.bounds = this.bounds.setPosition(center);
+    public void setPosition(Vector2d position) {
+        this.bounds = this.bounds.setPosition(position);
     }
     public Vector2d getCenter() {
         return this.bounds.getCenter();
     }
     public void setCenter(Vector2d center) {
         this.bounds = this.bounds.setCenter(center);
+    }
+    public void translate(Vector2d amount) {
+        this.bounds = this.bounds.translate(amount);
+    }
+    public void translate(double tx, double ty) {
+        this.bounds = this.bounds.translate(tx, ty);
     }
     public boolean intersects(Collider other) {
         return this.bounds.intersects(other.getBounds());
@@ -37,14 +43,14 @@ public class Collider {
             Rectangle intersection = obj.getBounds().getIntersection(getBounds());
             if (intersection.getWidth() < intersection.getHeight()) {
                 if (getBounds().getX() > obj.getBounds().getX())
-                    setPosition(getBounds().getPosition().add(intersection.getWidth(), 0));
+                    translate(intersection.getWidth(), 0);
                 else if (getBounds().getX2() > obj.getBounds().getX())
-                    setPosition(getBounds().getPosition().subtract(intersection.getWidth(), 0));
+                    translate(-intersection.getWidth(), 0);
             } else {
                 if (getBounds().getY() > obj.getBounds().getY())
-                    setPosition(getBounds().getPosition().add(0, intersection.getHeight()));
+                    translate(0, intersection.getHeight());
                 else if (getBounds().getY2() > obj.getBounds().getY())
-                    setPosition(getBounds().getPosition().subtract(0, intersection.getHeight()));
+                    translate(0, -intersection.getHeight());
             }
         }
     }
