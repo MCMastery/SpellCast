@@ -55,6 +55,7 @@ public class SpellCast {
         test.setText(text);
         test.setBounds(new Rectangle(0, 0, 450, 450));
         test.init();
+
     }
 
     private List<GameObject> objects, objectsClone;
