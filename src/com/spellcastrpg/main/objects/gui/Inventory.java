@@ -115,8 +115,12 @@ public class Inventory extends GUIContainer {
 
     public void showItemInfo(int slot) {
         ItemObject item = getItem(slot);
-        if (item == null)
+        if (item == null) {
+            if (this.itemInfo != null)
+                this.itemInfo.destroy();
+            this.itemInfo = null;
             return;
+        }
         if (this.itemInfo != null) {
             this.itemInfo.destroy();
             this.itemInfo = null;
