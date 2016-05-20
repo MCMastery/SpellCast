@@ -57,7 +57,7 @@ public class SpellCast {
         test.init();
     }
 
-    private List<GameObject> objects;
+    private List<GameObject> objects, objectsClone;
     private Window window;
     private Player player;
     private Vector2d cameraPosition;
@@ -67,9 +67,14 @@ public class SpellCast {
     private SpellCast() {
         this.objects = new ArrayList<>();
         this.objects = Collections.synchronizedList(this.objects);
+        updateCloneObjects();
         this.window = new Window();
         this.cameraPosition = Vector2d.ZERO;
         this.init = false;
+    }
+
+    void updateCloneObjects() {
+        this.objectsClone = new ArrayList<>(this.objects);
     }
 
     public void registerObject(GameObject object) {
@@ -79,7 +84,7 @@ public class SpellCast {
         this.objects.remove(object);
     }
     public List<GameObject> getObjects() {
-        return new ArrayList<>(this.objects);
+        return this.objectsClone;
     }
     public void updateObjects() {
         for (GameObject object : getObjects())
