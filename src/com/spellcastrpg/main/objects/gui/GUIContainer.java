@@ -17,6 +17,7 @@ public class GUIContainer extends GUIObject {
         this.border = DEFAULT_BORDER;
         this.radius = DEFAULT_RADIUS;
         this.borderWeight = DEFAULT_BORDER_WEIGHT;
+        setLayer(Integer.MAX_VALUE - 10);
     }
 
     public RGBAColor getBackground() {

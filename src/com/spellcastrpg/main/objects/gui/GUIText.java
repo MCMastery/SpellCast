@@ -6,10 +6,8 @@ import com.spellcastrpg.main.rendering.Renderer;
 import java.awt.*;
 
 public class GUIText extends GUIObject {
-    public static final Font DEFAULT_FONT = new Font(Font.MONOSPACED, Font.PLAIN, 14);
-
     public enum Alignment {
-        LEFT, CENTER;
+        LEFT, CENTER
     }
 
     private String text;
@@ -23,13 +21,13 @@ public class GUIText extends GUIObject {
         this("");
     }
     public GUIText(String text) {
-        this(text, DEFAULT_FONT);
+        this(text, Renderer.MAIN_FONT);
     }
     public GUIText(String text, Font font) {
         this(text, font, RGBAColor.BLACK);
     }
     public GUIText(String text, RGBAColor color) {
-        this(text, DEFAULT_FONT, color);
+        this(text, Renderer.MAIN_FONT, color);
     }
     public GUIText(String text, Font font, RGBAColor color) {
         this.text = text;

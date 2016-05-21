@@ -10,7 +10,6 @@ import com.spellcastrpg.main.objects.gui.Inventory;
 import com.spellcastrpg.main.map.RenderedMapTile;
 import com.spellcastrpg.main.objects.spells.SpellType;
 import com.spellcastrpg.main.rendering.Animation;
-import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
 
 /**
@@ -26,7 +25,7 @@ public class Player extends LivingObject {
         setSpeed(4);
         setMaxHealth(100);
         setHealth(100);
-        this.animation = SpellCast.loadAnimation("New wiz test.png", 10, 30);
+        this.animation = SpellCast.loadAnimation("wizard.png", 10, 30);
         this.inventory = new Inventory();
     }
 
@@ -47,11 +46,13 @@ public class Player extends LivingObject {
         super.init();
         this.inventory.init();
         addItem(new SpellItem(SpellType.WIND, new RosewoodEmbers()));
-        addItem(new RosewoodEmbers());
-        addItem(new Glowstone());
-        addItem(new GanckleTreeNut());
-        addItem(new ManagotRoot());
         addItem(new CaperhornLeaf());
+        addItem(new GanckleTreeNut());
+        addItem(new Glowstone());
+        addItem(new GoberFishEye());
+        addItem(new ManagotRoot());
+        addItem(new RosewoodEmbers());
+        addItem(new Tome());
     }
     @Override
     public void update() {

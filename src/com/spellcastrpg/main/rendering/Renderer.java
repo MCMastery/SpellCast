@@ -1,5 +1,6 @@
 package com.spellcastrpg.main.rendering;
 
+import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.*;
 import com.spellcastrpg.main.geometry.Rectangle;
 
@@ -7,6 +8,9 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.List;
 
@@ -14,6 +18,27 @@ import java.util.List;
  * Created by laser_000 on 5/14/2016.
  */
 public class Renderer {
+    public static Font MAIN_FONT = null;
+
+    static {
+        try {
+            InputStream stream = SpellCast.class.getClassLoader().getResourceAsStream("com/spellcastrpg/main/resources/main font.ttf");
+            Font font = Font.createFont(Font.TRUETYPE_FONT, stream);
+            MAIN_FONT = font.deriveFont(Font.PLAIN, 16);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+    }
+    public static RGBAColor getAverageColor(BufferedImage image) {
+        RGBAColor average = RGBAColor.TRANSPARENT;
+        for (int x = 0; x < image.getWidth(); x++)
+            for (int y = 0; y < image.getHeight(); y++)
+                average = average.add(RGBAColor.fromColor(new Color(image.getRGB(x, y))));
+        return average.divide(image.getWidth() * image.getHeight());
+    }
+
+
+
     private final Graphics2D g2d;
 
     public Renderer(Graphics2D g2d) {

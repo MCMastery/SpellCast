@@ -1,6 +1,7 @@
 package com.spellcastrpg.main.rendering;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Created by laser_000 on 5/14/2016.
@@ -59,9 +60,81 @@ public class RGBAColor {
     }
 
 
+    public RGBAColor add(RGBAColor other) {
+        return new RGBAColor(this.r + other.getR(), this.g + other.getG(), this.b + other.getB(), this.a + other.getA());
+    }
+    // does not change alpha value
+    public RGBAColor add(double r, double g, double b, double a) {
+        return new RGBAColor(this.r + r, this.g + g, this.b + b, this.a + a);
+    }
+    public RGBAColor add(double r, double g, double b) {
+        return new RGBAColor(this.r + r, this.g + g, this.b + b, this.a);
+    }
+    // does not change alpha value
+    public RGBAColor add(double rgb) {
+        return new RGBAColor(this.r + rgb, this.g + rgb, this.b + rgb, this.a);
+    }
+
+    public RGBAColor subtract(RGBAColor other) {
+        return new RGBAColor(this.r - other.getR(), this.g - other.getG(), this.b - other.getB(), this.a - other.getA());
+    }
+    // does not change alpha value
+    public RGBAColor subtract(double r, double g, double b, double a) {
+        return new RGBAColor(this.r - r, this.g - g, this.b - b, this.a - a);
+    }
+    public RGBAColor subtract(double r, double g, double b) {
+        return new RGBAColor(this.r - r, this.g - g, this.b - b, this.a);
+    }
+    // does not change alpha value
+    public RGBAColor subtract(double rgb) {
+        return new RGBAColor(this.r - rgb, this.g - rgb, this.b - rgb, this.a);
+    }
+
+    public RGBAColor multiply(RGBAColor other) {
+        return new RGBAColor(this.r * other.getR(), this.g * other.getG(), this.b * other.getB(), this.a * other.getA());
+    }
+    // does not change alpha value
+    public RGBAColor multiply(double r, double g, double b, double a) {
+        return new RGBAColor(this.r * r, this.g * g, this.b * b, this.a * a);
+    }
+    public RGBAColor multiply(double r, double g, double b) {
+        return new RGBAColor(this.r * r, this.g * g, this.b * b, this.a);
+    }
+    // does not change alpha value
+    public RGBAColor multiply(double rgb) {
+        return new RGBAColor(this.r * rgb, this.g * rgb, this.b * rgb, this.a);
+    }
+
+    public RGBAColor divide(RGBAColor other) {
+        return new RGBAColor(this.r / other.getR(), this.g / other.getG(), this.b / other.getB(), this.a / other.getA());
+    }
+    // does not change alpha value
+    public RGBAColor divide(double r, double g, double b, double a) {
+        return new RGBAColor(this.r / r, this.g / g, this.b / b, this.a / a);
+    }
+    public RGBAColor divide(double r, double g, double b) {
+        return new RGBAColor(this.r / r, this.g / g, this.b / b, this.a);
+    }
+    // does not change alpha value
+    public RGBAColor divide(double rgb) {
+        return new RGBAColor(this.r / rgb, this.g / rgb, this.b / rgb, this.a);
+    }
+
+
     public Color toColor() {
         return new Color((int) Math.round(getR() * 255), (int) Math.round(getG() * 255), (int) Math.round(getB() * 255),
                 (int) Math.round(getA() * 255));
+    }
+    public static RGBAColor fromColor(Color color) {
+        return new RGBAColor(color.getRed() / 255.0, color.getGreen() / 255.0, color.getBlue() / 255.0, color.getAlpha() / 255.0);
+    }
+
+
+    public static RGBAColor average(List<RGBAColor> colors) {
+        RGBAColor average = TRANSPARENT;
+        for (RGBAColor color : colors)
+            average = average.add(color);
+        return average.divide(colors.size());
     }
 
 
