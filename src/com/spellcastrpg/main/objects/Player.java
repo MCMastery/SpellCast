@@ -51,6 +51,8 @@ public class Player extends LivingObject {
         addItem(new Glowstone());
         addItem(new GoberFishEye());
         addItem(new ManagotRoot());
+        addItem(new PhoenixFeather());
+        addItem(new QuatasiumJade());
         addItem(new RosewoodEmbers());
         addItem(new Tome());
     }
