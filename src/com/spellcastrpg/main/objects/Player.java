@@ -5,11 +5,8 @@ import com.spellcastrpg.main.Key;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
-import com.spellcastrpg.main.items.SpellItem;
+import com.spellcastrpg.main.items.*;
 import com.spellcastrpg.main.objects.gui.Inventory;
-import com.spellcastrpg.main.items.Item;
-import com.spellcastrpg.main.items.ItemObject;
-import com.spellcastrpg.main.items.RosewoodEmbers;
 import com.spellcastrpg.main.map.RenderedMapTile;
 import com.spellcastrpg.main.objects.spells.SpellType;
 import com.spellcastrpg.main.rendering.RGBAColor;
@@ -48,6 +45,9 @@ public class Player extends LivingObject {
         this.inventory.init();
         addItem(new SpellItem(SpellType.WIND, new RosewoodEmbers()));
         addItem(new RosewoodEmbers());
+        addItem(new Glowstone());
+        addItem(new GanckleTreeNut());
+        addItem(new CaperhornLeaf());
     }
     @Override
     public void update() {
