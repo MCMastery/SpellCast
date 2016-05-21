@@ -5,16 +5,12 @@ import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.rendering.Renderer;
 
 public class GUITextContainer extends GUIContainer {
-    public static final double DEFAULT_PADDING = 10;
-
     private GUIText text;
-    private double padding;
     // should this container's size match the text's used size
     private boolean constrain;
 
     public GUITextContainer() {
         this.text = new GUIText();
-        this.padding = DEFAULT_PADDING;
         this.constrain = false;
     }
 
@@ -31,12 +27,6 @@ public class GUITextContainer extends GUIContainer {
     public void setTextValue(String text) {
         this.text.setText(text);
     }
-    public double getPadding() {
-        return this.padding;
-    }
-    public void setPadding(double padding) {
-        this.padding = padding;
-    }
     public boolean isConstrained() {
         return this.constrain;
     }
@@ -47,7 +37,7 @@ public class GUITextContainer extends GUIContainer {
     }
 
     public Rectangle getTextBounds() {
-        return getBounds().expand(-this.padding * 2, -this.padding * 2);
+        return getBounds().expand(-getPadding() * 2, -getPadding() * 2);
     }
     public void updateBounds() {
         // constrain the bounds around the text
@@ -55,9 +45,9 @@ public class GUITextContainer extends GUIContainer {
             Rectangle textBounds = SpellCast.INSTANCE.getWindow().getCanvas().getLastRenderer().getTextBounds(this.text.getText(), this.text.getFont());
             textBounds = textBounds.setPosition(getPosition());
             // add padding
-            textBounds = textBounds.expand(this.padding * 2, this.padding * 2);
+            textBounds = textBounds.expand(getPadding() * 2, getPadding() * 2);
             // offset position because of padding
-            textBounds = textBounds.translate(this.padding, this.padding);
+            textBounds = textBounds.translate(getPadding(), getPadding());
             setBounds(textBounds);
         }
     }

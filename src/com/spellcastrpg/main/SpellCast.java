@@ -142,10 +142,13 @@ public class SpellCast {
     }
 
 
+    public static InputStream getResourceStream(String name) {
+        return SpellCast.class.getClassLoader().getResourceAsStream("com/spellcastrpg/main/resources/" + name);
+    }
+
     public static BufferedImage loadImage(String name) {
         try {
-            InputStream stream = SpellCast.class.getClassLoader().getResourceAsStream("com/spellcastrpg/main/resources/" + name);
-            return ImageIO.read(stream);
+            return ImageIO.read(getResourceStream(name));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -163,8 +166,7 @@ public class SpellCast {
     }
     public static Map loadMap(String name) {
         try {
-            InputStream stream = SpellCast.class.getClassLoader().getResourceAsStream("com/spellcastrpg/main/resources/" + name);
-            return Map.load(new BufferedReader(new InputStreamReader(stream)));
+            return Map.load(new BufferedReader(new InputStreamReader(getResourceStream(name))));
         } catch (IOException e) {
             e.printStackTrace();
             return null;

@@ -22,7 +22,7 @@ public class Renderer {
 
     static {
         try {
-            InputStream stream = SpellCast.class.getClassLoader().getResourceAsStream("com/spellcastrpg/main/resources/main font.ttf");
+            InputStream stream = SpellCast.getResourceStream("main font.ttf");
             Font font = Font.createFont(Font.TRUETYPE_FONT, stream);
             MAIN_FONT = font.deriveFont(Font.PLAIN, 16);
         } catch (IOException | FontFormatException e) {

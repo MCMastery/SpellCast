@@ -1,5 +1,7 @@
 package com.spellcastrpg.main.objects.gui;
 
+import com.spellcastrpg.main.Anchor;
+import com.spellcastrpg.main.IAnchor;
 import com.spellcastrpg.main.Input;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
@@ -23,6 +25,7 @@ public class Inventory extends GUIContainer {
         this.size = 10;
         this.selectionColor = new RGBAColor(1, 0, 1, 0.75);
         this.itemInfo = null;
+        setAnchor(new Anchor(IAnchor.HAnchor.CENTER, IAnchor.VAnchor.CENTER));
         updateBounds();
     }
 
@@ -85,10 +88,8 @@ public class Inventory extends GUIContainer {
 
 
     public void updateBounds() {
-        Rectangle bounds = new Rectangle(0, 0, this.size * ItemObject.SIZE, ItemObject.SIZE)
-                .setCenter(SpellCast.INSTANCE.getWindowCenter())
-                .setY(0);
-        setBounds(bounds);
+        // remember our anchor is in the center
+        setBounds(new Rectangle(SpellCast.INSTANCE.getWindowSize().getWidth() / 2, ItemObject.SIZE / 2, this.size * ItemObject.SIZE, ItemObject.SIZE));
     }
 
 

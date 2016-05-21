@@ -6,17 +6,19 @@ import com.spellcastrpg.main.rendering.Renderer;
 public class GUIContainer extends GUIObject {
     public static final RGBAColor DEFAULT_BACKGROUND = new RGBAColor(0.75, 0.75, 0.75, 0.75);
     public static final RGBAColor DEFAULT_BORDER = new RGBAColor(0, 0, 0, 0.75);
+    public static final double DEFAULT_PADDING = 10;
     public static final double DEFAULT_RADIUS = 10;
     public static final double DEFAULT_BORDER_WEIGHT = 1;
 
     private RGBAColor background, border;
-    private double radius, borderWeight;
+    private double radius, borderWeight, padding;
 
     public GUIContainer() {
         this.background = DEFAULT_BACKGROUND;
         this.border = DEFAULT_BORDER;
         this.radius = DEFAULT_RADIUS;
         this.borderWeight = DEFAULT_BORDER_WEIGHT;
+        this.padding = DEFAULT_PADDING;
         setLayer(Integer.MAX_VALUE - 10);
     }
 
@@ -43,6 +45,12 @@ public class GUIContainer extends GUIObject {
     }
     public void setBorderWeight(double borderWeight) {
         this.borderWeight = borderWeight;
+    }
+    public double getPadding() {
+        return this.padding;
+    }
+    public void setPadding(double padding) {
+        this.padding = padding;
     }
 
     @Override
