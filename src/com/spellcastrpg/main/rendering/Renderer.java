@@ -173,6 +173,15 @@ public class Renderer {
 
 
 
+    public void drawAnimationFrame(Animation animation, Vector2d position) {
+        drawImage(animation.getCurrentFrame(), position);
+    }
+    public void drawRoundedAnimationFrame(Animation animation, double arcWidth, double arcHeight,  Vector2d position) {
+        drawRoundedImage(animation.getCurrentFrame(), arcWidth, arcHeight, position);
+    }
+
+
+
     public void fillPolygon(RGBAColor color, Vector2d... vertices) {
         this.g2d.setColor(color.toColor());
         Polygon polygon = new Polygon();

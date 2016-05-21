@@ -9,6 +9,7 @@ import com.spellcastrpg.main.items.*;
 import com.spellcastrpg.main.objects.gui.Inventory;
 import com.spellcastrpg.main.map.RenderedMapTile;
 import com.spellcastrpg.main.objects.spells.SpellType;
+import com.spellcastrpg.main.rendering.Animation;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
 
@@ -17,13 +18,15 @@ import com.spellcastrpg.main.rendering.Renderer;
  */
 public class Player extends LivingObject {
     private Inventory inventory;
+    private Animation animation;
 
     public Player() {
-        setBounds(new Rectangle(0, 0, 32, 32));
+        setBounds(new Rectangle(0, 0, 52, 100));
         setCenter(SpellCast.INSTANCE.getMapCenter());
         setSpeed(4);
         setMaxHealth(100);
         setHealth(100);
+        this.animation = SpellCast.loadAnimation("New wiz test.png", 10, 30);
         this.inventory = new Inventory();
     }
 
@@ -47,6 +50,7 @@ public class Player extends LivingObject {
         addItem(new RosewoodEmbers());
         addItem(new Glowstone());
         addItem(new GanckleTreeNut());
+        addItem(new ManagotRoot());
         addItem(new CaperhornLeaf());
     }
     @Override
@@ -64,6 +68,8 @@ public class Player extends LivingObject {
         translate(movement);
         setBounds(getBounds().clamp(SpellCast.INSTANCE.getMapSize()));
         SpellCast.INSTANCE.setCameraPosition(getCenter());
+        if (!movement.equals(Vector2d.ZERO))
+            this.animation.update();
     }
     @Override
     public void collide(Collider object) {
@@ -72,7 +78,8 @@ public class Player extends LivingObject {
     }
     @Override
     public void render(Renderer r) {
-        r.fillRect(getBounds(), RGBAColor.GREEN);
+        //r.fillRect(getBounds(), RGBAColor.GREEN);
+        r.drawAnimationFrame(this.animation, getPosition());
         super.render(r);
     }
 }

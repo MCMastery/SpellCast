@@ -6,6 +6,7 @@ import com.spellcastrpg.main.map.Map;
 import com.spellcastrpg.main.objects.GameObject;
 import com.spellcastrpg.main.objects.Player;
 import com.spellcastrpg.main.objects.TestEnemy;
+import com.spellcastrpg.main.rendering.Animation;
 import com.spellcastrpg.main.rendering.Renderer;
 
 import javax.imageio.ImageIO;
@@ -149,6 +150,16 @@ public class SpellCast {
             e.printStackTrace();
             return null;
         }
+    }
+    public static Animation loadAnimation(String name, int frameCount, double framesPerSecond) {
+        BufferedImage image = loadImage(name);
+        if (image == null)
+            return null;
+        int frameWidth = image.getWidth() / frameCount;
+        List<BufferedImage> frames = new ArrayList<>();
+        for (int x = 0; x < image.getWidth() - frameCount; x += frameWidth)
+            frames.add(image.getSubimage(x, 0, frameWidth, image.getHeight()));
+        return new Animation(framesPerSecond, frames);
     }
     public static Map loadMap(String name) {
         try {

@@ -11,6 +11,7 @@ public enum ItemType {
     GLOWSTONE("Glowstone", 0, SpellCast.loadImage("glowstone.png")),
     CAPERHORN_LEAF("Caperhorn Leaf", 0, SpellCast.loadImage("caperhorn leaf.png")),
     GANCKLE_TREE_NUT("Ganckle Tree Nut", 0, SpellCast.loadImage("ganckle tree nut.png")),
+    MANAGOT_ROOT("Managot Root", 0, SpellCast.loadImage("managot root.png")),
     ROSEWOOD_EMBERS("Rosewood Embers", 0, SpellCast.loadImage("rosewood embers.png"));
 
     private final String name;
