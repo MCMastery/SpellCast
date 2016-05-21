@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 public enum MapTile {
     AIR(null, false, false),
     GRASS("grass.png", true, false),
+    DIRT("dirt.png", true, false),
     STONE("stone.png", true, true)
     ;
 

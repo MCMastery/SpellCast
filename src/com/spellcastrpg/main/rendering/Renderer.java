@@ -170,4 +170,24 @@ public class Renderer {
         g2.drawImage(image, null, 0, 0);
         this.g2d.drawImage(output, (int) Math.round(position.getX()), (int) Math.round(position.getY()), null);
     }
+
+
+
+    public void fillPolygon(RGBAColor color, Vector2d... vertices) {
+        this.g2d.setColor(color.toColor());
+        Polygon polygon = new Polygon();
+        for (Vector2d vertex : vertices)
+            polygon.addPoint((int) Math.round(vertex.getX()), (int) Math.round(vertex.getY()));
+        this.g2d.fillPolygon(polygon);
+    }
+    public void drawPolygon(RGBAColor color, double thickness, Vector2d... vertices) {
+        Stroke oldStroke = this.g2d.getStroke();
+        this.g2d.setStroke(new BasicStroke(Double.valueOf(thickness).floatValue()));
+        this.g2d.setColor(color.toColor());
+        Polygon polygon = new Polygon();
+        for (Vector2d vertex : vertices)
+            polygon.addPoint((int) Math.round(vertex.getX()), (int) Math.round(vertex.getY()));
+        this.g2d.drawPolygon(polygon);
+        this.g2d.setStroke(oldStroke);
+    }
 }

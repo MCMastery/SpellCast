@@ -21,7 +21,7 @@ public class Inventory extends GUIContainer {
         this.contents = new HashMap<>();
         this.selection = 0;
         this.size = 10;
-        this.selectionColor = new RGBAColor(0, 1, 0, 0.25);
+        this.selectionColor = new RGBAColor(0, 1, 0, 0.75);
         this.itemInfo = null;
         updateBounds();
     }
@@ -139,16 +139,16 @@ public class Inventory extends GUIContainer {
 
     @Override
     public void render(Renderer r) {
-        // don't render the GUIContainer - we want the border to be rendered on top.
-        r.fillRoundedRect(getBounds(), getRadius(), getRadius(), getBackground());
-        Vector2d selectionPos = getBounds().getPosition().add(this.selection * ItemObject.SIZE, 0);
+        super.render(r);
         for (int slot = 0; slot < this.size; slot++) {
             ItemObject item = getItem(slot);
             if (item == null || item.getType().getImage() == null)
                 continue;
             r.drawRoundedImage(item.getType().getImage(), getRadius(), getRadius(), new Vector2d(getBounds().getX() + slot * ItemObject.SIZE, getBounds().getY()));
         }
-        r.fillRoundedRect(new Rectangle(selectionPos, ItemObject.SIZE, ItemObject.SIZE), getRadius(), getRadius(), this.selectionColor);
-        r.drawRoundedRect(getBounds(), getRadius(), getRadius(), getBorderWeight(), getBorder());
+        // add size / 2 so it is centered
+        Vector2d selectionPos = getBounds().getPosition().add(this.selection * ItemObject.SIZE + ItemObject.SIZE / 2, ItemObject.SIZE);
+        // draw selection arrow
+        r.fillPolygon(this.selectionColor, selectionPos, selectionPos.add(-8, 8), selectionPos.add(8, 8));
     }
 }

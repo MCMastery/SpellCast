@@ -5,17 +5,15 @@ import com.spellcastrpg.main.Key;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
+import com.spellcastrpg.main.items.SpellItem;
 import com.spellcastrpg.main.objects.gui.Inventory;
 import com.spellcastrpg.main.items.Item;
 import com.spellcastrpg.main.items.ItemObject;
 import com.spellcastrpg.main.items.RosewoodEmbers;
-import com.spellcastrpg.main.items.Wand;
 import com.spellcastrpg.main.map.RenderedMapTile;
 import com.spellcastrpg.main.objects.spells.SpellType;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
-
-import java.util.Collections;
 
 /**
  * Created by laser_000 on 5/14/2016.
@@ -48,7 +46,7 @@ public class Player extends LivingObject {
     public void init() {
         super.init();
         this.inventory.init();
-        addItem(new Wand(SpellType.WIND, Collections.singleton(new RosewoodEmbers())));
+        addItem(new SpellItem(SpellType.WIND, new RosewoodEmbers()));
         addItem(new RosewoodEmbers());
     }
     @Override

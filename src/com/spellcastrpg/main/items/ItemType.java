@@ -6,8 +6,8 @@ import com.spellcastrpg.main.SpellCast;
 import java.awt.image.BufferedImage;
 
 public enum ItemType {
-    // uses per second will be affected by the spell
-    WAND("Wand", 0, SpellCast.loadImage("wand.png")),
+    // uses per second will be affected by the spell type
+    SPELL("Spell", 0, SpellCast.loadImage("tome.png")),
     ROSEWOOD_EMBERS("Rosewood Embers", 0, SpellCast.loadImage("rosewood embers.png"));
 
     private final String name;
