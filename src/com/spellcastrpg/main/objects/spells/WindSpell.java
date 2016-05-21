@@ -14,7 +14,7 @@ public class WindSpell extends SpellObject {
     private RGBAColor color;
 
     public WindSpell() {
-        this.range = 550;
+        this.range = 300;
         this.radius = 1;
         this.power = 1.1;
         this.color = new RGBAColor(0.75, 0.75, 0.75);
@@ -70,7 +70,8 @@ public class WindSpell extends SpellObject {
         updateBounds();
 
         for (GameObject object : SpellCast.INSTANCE.getObjects()) {
-            if (object instanceof Enemy && getCenter().getDistanceSquared(object.getCenter()) <= this.radius * this.radius) {
+            double distanceSquared = getCenter().getDistanceSquared(object.getCenter());
+            if (object instanceof Enemy && distanceSquared <= this.radius * this.radius && distanceSquared >= this.radius * this.radius / 2.0) {
                 Enemy enemy = (Enemy) object;
                 // radius - oldRadius = how much larger this spell got
                 enemy.moveAwayFrom(getCenter(), this.radius - oldRadius);
@@ -83,6 +84,6 @@ public class WindSpell extends SpellObject {
 
     @Override
     public void render(Renderer r) {
-        r.fillEllipse(getBounds(), this.color);
+        r.drawEllipse(getBounds(), this.radius / 2.0, this.color);
     }
 }
