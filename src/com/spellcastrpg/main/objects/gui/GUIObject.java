@@ -30,4 +30,9 @@ public class GUIObject extends GameObject {
     public Vector2d getPosition() {
         return getBounds().getPosition();
     }
+    //todo find better way to use anchors
+    @Override
+    public Vector2d getCenter() {
+        return getBounds().getCenter();
+    }
 }

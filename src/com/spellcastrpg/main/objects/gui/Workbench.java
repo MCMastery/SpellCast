@@ -23,7 +23,7 @@ public class Workbench extends GUIContainer {
         this.base = null;
         this.modifiers = new HashSet<>();
         setAnchor(new Anchor(IAnchor.HAnchor.CENTER, IAnchor.VAnchor.CENTER));
-        setBounds(new Rectangle(SpellCast.INSTANCE.getWindowCenter(), 512, 512));
+        updateBounds();
     }
 
     public RGBAColor getColor() {
@@ -59,6 +59,9 @@ public class Workbench extends GUIContainer {
         if (this.base != null)
             this.color = SpellUtils.getColor(this.base, this.modifiers);
     }
+    public void updateBounds() {
+        setBounds(new Rectangle(SpellCast.INSTANCE.getWindowCenter(), 512, 512));
+    }
 
     @Override
     public void keyDown(Key key) {
@@ -69,17 +72,26 @@ public class Workbench extends GUIContainer {
     }
     @Override
     public void mouseDown(int button, Vector2d position) {
-        if (button == Input.MOUSE_RIGHT) {
-            ItemObject modifier = SpellCast.INSTANCE.getPlayer().getSelectedItem();
-            if (modifier == null)
+        if (getBounds().contains(Input.INSTANCE.getMouseScreenPosition())) {
+            ItemObject item = SpellCast.INSTANCE.getPlayer().getSelectedItem();
+            if (item == null)
                 return;
-            addModifier(modifier.getType());
+            if (button == Input.MOUSE_LEFT) {
+                addModifier(item.getType());
+            } else if (button == Input.MOUSE_RIGHT)
+                setBase(item.getType());
         }
+    }
+
+    @Override
+    public void update() {
+        updateBounds();
     }
 
     @Override
     public void render(Renderer r) {
         super.render(r);
-
+        Rectangle square = new Rectangle(128, 128).setCenter(getCenter());
+        r.fillRoundedRect(square, getRadius(), getRadius(), this.color);
     }
 }
