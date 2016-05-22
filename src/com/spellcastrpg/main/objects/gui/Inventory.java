@@ -120,11 +120,10 @@ public class Inventory extends GUIContainer {
     }
 
     @Override
-    public void mouseDown(int button, Vector2d gamePos) {
-        Vector2d screenPos = Input.INSTANCE.getMouseScreenPosition();
-        if (button != Input.MOUSE_LEFT || !getBounds().contains(screenPos))
+    public void mouseDown(int button, Vector2d position) {
+        if (button != Input.MOUSE_LEFT || !getBounds().contains(position))
             return;
-        int slot = getSlotAt(screenPos);
+        int slot = getSlotAt(position);
         if (slot >= 0 && slot < this.size)
             setSelection(slot);
     }

@@ -72,7 +72,7 @@ public class Workbench extends GUIContainer {
     }
     @Override
     public void mouseDown(int button, Vector2d position) {
-        if (getBounds().contains(Input.INSTANCE.getMouseScreenPosition())) {
+        if (getBounds().contains(position)) {
             ItemObject item = SpellCast.INSTANCE.getPlayer().getSelectedItem();
             if (item == null)
                 return;
