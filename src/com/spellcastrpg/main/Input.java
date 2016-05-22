@@ -2,6 +2,7 @@ package com.spellcastrpg.main;
 
 import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.objects.GameObject;
+import com.spellcastrpg.main.objects.gui.GUIObject;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -19,25 +20,38 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
 
     private Set<Key> keysDown;
     private Set<Integer> buttonsDown;
+    private Vector2d mouseScreenPos, mouseGamePos;
 
     private Input() {
         this.keysDown = new HashSet<>();
         this.buttonsDown = new HashSet<>();
+        this.mouseScreenPos = null;
+        this.mouseGamePos = null;
     }
 
     public Vector2d getMousePosition() {
-        Point point = SpellCast.INSTANCE.getWindow().getCanvas().getMousePosition();
-        Vector2d position = new Vector2d(point.getX(), point.getY());
-        position = position.add(SpellCast.INSTANCE.getCameraPosition());
-        // subtract half of screen size, since camera pos is in center
-        position = position.subtract(SpellCast.INSTANCE.getWindowSize().getSize().divide(2));
-        return position;
+        return this.mouseGamePos;
     }
     public Vector2d getMouseScreenPosition() {
+        return this.mouseScreenPos;
+    }
+    public boolean mouseOverGUI() {
+        Vector2d mousePosition = getMouseScreenPosition();
+        for (GameObject object : SpellCast.INSTANCE.getObjects())
+            if (object instanceof GUIObject && object.getBounds().contains(mousePosition))
+                return true;
+        return false;
+    }
+
+    public void update() {
         Point point = SpellCast.INSTANCE.getWindow().getCanvas().getMousePosition();
         if (point == null)
-            return null;
-        return new Vector2d(point.getX(), point.getY());
+            return;
+        this.mouseGamePos = new Vector2d(point.getX(), point.getY());
+        this.mouseGamePos = this.mouseGamePos.add(SpellCast.INSTANCE.getCameraPosition());
+        // subtract half of screen size, since camera pos is in center
+        this.mouseGamePos = this.mouseGamePos.subtract(SpellCast.INSTANCE.getWindowSize().getSize().divide(2));
+        this.mouseScreenPos = new Vector2d(point.getX(), point.getY());
     }
 
     public boolean keyDown(Key key) {

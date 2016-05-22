@@ -9,6 +9,7 @@ import com.spellcastrpg.main.items.*;
 import com.spellcastrpg.main.items.ingredients.*;
 import com.spellcastrpg.main.objects.gui.Inventory;
 import com.spellcastrpg.main.map.RenderedMapTile;
+import com.spellcastrpg.main.objects.gui.Workbench;
 import com.spellcastrpg.main.objects.spells.SpellType;
 import com.spellcastrpg.main.rendering.Animation;
 import com.spellcastrpg.main.rendering.Renderer;
@@ -46,7 +47,7 @@ public class Player extends LivingObject {
     public void init() {
         super.init();
         this.inventory.init();
-        addItem(new SpellItem(SpellType.WIND, new RosewoodEmbers()));
+        addItem(new SpellItem(SpellType.WIND, ItemType.ROSEWOOD_EMBERS));
         addItem(new CaperhornLeaf());
         addItem(new GanckleTreeNut());
         addItem(new Glowstone());
@@ -74,6 +75,15 @@ public class Player extends LivingObject {
         SpellCast.INSTANCE.setCameraPosition(getCenter());
         if (!movement.equals(Vector2d.ZERO))
             this.animation.update();
+    }
+    @Override
+    public void keyDown(Key key) {
+        if (key == Key.E)
+            new Workbench().init();
+        else if (key == Key.K)
+            for (GameObject object : SpellCast.INSTANCE.getObjects())
+                if (object instanceof Enemy)
+                    object.destroy();
     }
     @Override
     public void collide(Collider object) {

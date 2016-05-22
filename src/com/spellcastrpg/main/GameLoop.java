@@ -8,6 +8,7 @@ public class GameLoop implements Runnable {
     public void run() {
         while (true) {
             SpellCast.INSTANCE.updateCloneObjects();
+            Input.INSTANCE.update();
             SpellCast.INSTANCE.updateObjects();
             SpellCast.INSTANCE.collisionUpdateObjects();
             SpellCast.INSTANCE.getWindow().getCanvas().repaint();

@@ -121,6 +121,14 @@ public class RGBAColor {
     }
 
 
+    public boolean isGrayscale() {
+        return this.r == this.g && this.g == this.b;
+    }
+    public double getDistance(RGBAColor other) {
+        return Math.sqrt(Math.pow(other.getR() - this.r, 2) + Math.pow(other.getG() - this.g, 2) + Math.pow(other.getB() - this.b, 2) + Math.pow(other.getA() - this.a, 2));
+    }
+
+
     public Color toColor() {
         return new Color((int) Math.round(getR() * 255), (int) Math.round(getG() * 255), (int) Math.round(getB() * 255),
                 (int) Math.round(getA() * 255));
@@ -142,5 +150,9 @@ public class RGBAColor {
     public boolean equals(Object other) {
         return other instanceof RGBAColor && ((RGBAColor) other).getR() == getR() && ((RGBAColor) other).getG() == getG()
                 && ((RGBAColor) other).getB() == getB() && ((RGBAColor) other).getA() == getA();
+    }
+    @Override
+    public String toString() {
+        return "(" + getR() + "," + getG() + "," + getB() + "," + getA() + ")";
     }
 }

@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -31,10 +30,17 @@ public class Renderer {
     }
     public static RGBAColor getAverageColor(BufferedImage image) {
         RGBAColor average = RGBAColor.TRANSPARENT;
-        for (int x = 0; x < image.getWidth(); x++)
-            for (int y = 0; y < image.getHeight(); y++)
-                average = average.add(RGBAColor.fromColor(new Color(image.getRGB(x, y))));
-        return average.divide(image.getWidth() * image.getHeight());
+        int pixels = 0;
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
+                RGBAColor pixel = RGBAColor.fromColor(new Color(image.getRGB(x, y), true));
+                if (pixel.getA() == 0)
+                    continue;
+                average = average.add(pixel);
+                pixels++;
+            }
+        }
+        return average.divide(pixels);
     }
 
 
