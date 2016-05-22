@@ -7,6 +7,7 @@ import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.items.*;
 import com.spellcastrpg.main.items.ingredients.*;
+import com.spellcastrpg.main.objects.gui.GUIContainer;
 import com.spellcastrpg.main.objects.gui.Inventory;
 import com.spellcastrpg.main.map.RenderedMapTile;
 import com.spellcastrpg.main.objects.gui.Workbench;
@@ -20,6 +21,7 @@ import com.spellcastrpg.main.rendering.Renderer;
 public class Player extends LivingObject {
     private Inventory inventory;
     private Animation animation;
+    private GUIContainer openedGUI;
 
     public Player() {
         setBounds(new Rectangle(0, 0, 52, 100));
@@ -29,6 +31,7 @@ public class Player extends LivingObject {
         setHealth(100);
         this.animation = SpellCast.loadAnimation("wizard.png", 10, 30);
         this.inventory = new Inventory();
+        this.openedGUI = null;
     }
 
     public Inventory getInventory() {
@@ -40,7 +43,22 @@ public class Player extends LivingObject {
     public boolean addItem(ItemObject item) {
         return this.inventory.addItem(item);
     }
-
+    public GUIContainer getOpenedGUI() {
+        return this.openedGUI;
+    }
+    // also instantiates the given gui
+    public void setOpenedGUI(GUIContainer gui) {
+        if (this.openedGUI != null)
+            this.openedGUI.destroy();
+        this.openedGUI = gui;
+        if (gui != null)
+            gui.init();
+    }
+    public void closeGUI() {
+        if (this.openedGUI != null)
+            this.openedGUI.destroy();
+        this.openedGUI = null;
+    }
 
 
     @Override
@@ -78,9 +96,10 @@ public class Player extends LivingObject {
     }
     @Override
     public void keyDown(Key key) {
-        if (key == Key.E)
-            new Workbench().init();
-        else if (key == Key.K)
+        if (key == Key.E) {
+            if (!(this.openedGUI instanceof Workbench))
+                setOpenedGUI(new Workbench());
+        } else if (key == Key.K)
             for (GameObject object : SpellCast.INSTANCE.getObjects())
                 if (object instanceof Enemy)
                     object.destroy();

@@ -62,8 +62,10 @@ public class Workbench extends GUIContainer {
 
     @Override
     public void keyDown(Key key) {
-        if (key == Key.ESCAPE)
+        if (key == Key.E) {
             destroy();
+            SpellCast.INSTANCE.getPlayer().closeGUI();
+        }
     }
     @Override
     public void mouseDown(int button, Vector2d position) {
