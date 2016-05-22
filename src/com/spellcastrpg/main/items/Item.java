@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public interface Item {
     enum State {
-        LIQUID, SOLID
+        LIQUID, SOLID, PASTE
     }
 
     String getName();

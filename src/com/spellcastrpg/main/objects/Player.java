@@ -6,6 +6,7 @@ import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.items.*;
+import com.spellcastrpg.main.items.ingredients.*;
 import com.spellcastrpg.main.objects.gui.Inventory;
 import com.spellcastrpg.main.map.RenderedMapTile;
 import com.spellcastrpg.main.objects.spells.SpellType;
@@ -32,7 +33,7 @@ public class Player extends LivingObject {
     public Inventory getInventory() {
         return this.inventory;
     }
-    public Item getSelectedItem() {
+    public ItemObject getSelectedItem() {
         return this.inventory.getSelectedItem();
     }
     public boolean addItem(ItemObject item) {

@@ -13,6 +13,8 @@ import java.util.Set;
  */
 public class Input implements KeyListener, MouseListener, MouseWheelListener {
     public static final int MOUSE_LEFT = 1;
+    public static final int MOUSE_MIDDLE = 2;
+    public static final int MOUSE_RIGHT = 3;
     public static final Input INSTANCE = new Input();
 
     private Set<Key> keysDown;

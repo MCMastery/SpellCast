@@ -151,5 +151,8 @@ public class Inventory extends GUIContainer {
         Vector2d selectionPos = getBounds().getPosition().add(this.selection * ItemObject.SIZE + ItemObject.SIZE / 2, ItemObject.SIZE);
         // draw selection arrow
         r.fillPolygon(this.selectionColor, selectionPos, selectionPos.add(-8, 8), selectionPos.add(8, 8));
+        // draw selection circle
+        Rectangle selectionBounds = getBounds().translate(this.selection * ItemObject.SIZE, 0).setSize(ItemObject.SIZE, ItemObject.SIZE);
+        r.drawRoundedRect(selectionBounds, getRadius(), getRadius(), 1, this.selectionColor);
     }
 }
