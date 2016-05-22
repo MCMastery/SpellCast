@@ -93,18 +93,23 @@ public class Inventory extends GUIContainer {
     }
 
 
+    public int getSlotAt(Vector2d screenPosition) {
+        screenPosition = screenPosition.subtract(getPosition());
+        return (int) Math.floor(screenPosition.getX() / ItemObject.SIZE);
+    }
+
+
     @Override
     public void update() {
         updateBounds();
         ItemObject selectedItem = getSelectedItem();
-        if (selectedItem != null && selectedItem.canUse() && Input.INSTANCE.mouseDown(Input.MOUSE_LEFT))
+        if (selectedItem != null && selectedItem.canUse() && Input.INSTANCE.mouseDown(Input.MOUSE_LEFT) && !Input.INSTANCE.mouseOverGUI())
             selectedItem.use();
 
         // check if we should show the item info box
         Vector2d mousePos = Input.INSTANCE.getMouseScreenPosition();
         if (getBounds().contains(mousePos)) {
-            mousePos = mousePos.subtract(getPosition());
-            int slot = (int) Math.floor(mousePos.getX() / ItemObject.SIZE);
+            int slot = getSlotAt(mousePos);
             showItemInfo(slot);
         } else {
             if (this.itemInfo != null) {
@@ -112,6 +117,16 @@ public class Inventory extends GUIContainer {
                 this.itemInfo = null;
             }
         }
+    }
+
+    @Override
+    public void mouseDown(int button, Vector2d gamePos) {
+        Vector2d screenPos = Input.INSTANCE.getMouseScreenPosition();
+        if (button != Input.MOUSE_LEFT || !getBounds().contains(screenPos))
+            return;
+        int slot = getSlotAt(screenPos);
+        if (slot >= 0 && slot < this.size)
+            setSelection(slot);
     }
 
     public void showItemInfo(int slot) {

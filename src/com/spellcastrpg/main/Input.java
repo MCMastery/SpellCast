@@ -92,15 +92,19 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
     public void mousePressed(MouseEvent e) {
         if (mouseUp(e.getButton())) {
             this.buttonsDown.add(e.getButton());
+            boolean overGUI = mouseOverGUI();
             for (GameObject object : SpellCast.INSTANCE.getObjects())
-                object.mouseDown(e.getButton(), getMousePosition());
+                if (!overGUI || object instanceof GUIObject)
+                    object.mouseDown(e.getButton(), getMousePosition());
         }
     }
     @Override
     public void mouseReleased(MouseEvent e) {
         this.buttonsDown.remove(e.getButton());
+        boolean overGUI = mouseOverGUI();
         for (GameObject object : SpellCast.INSTANCE.getObjects())
-            object.mouseUp(e.getButton(), getMousePosition());
+            if (!overGUI || object instanceof GUIObject)
+                object.mouseUp(e.getButton(), getMousePosition());
     }
     @Override
     public void mouseEntered(MouseEvent e) {}
