@@ -10,7 +10,7 @@ public class ItemInfoBox extends GUITextContainer {
 
     public ItemInfoBox(ItemObject item) {
         this.item = item;
-        setAlignment(Alignment.CENTER);
+        setAlignment(HAlignment.CENTER);
         constrainWidth(true);
         constrainHeight(true);
         updateText();

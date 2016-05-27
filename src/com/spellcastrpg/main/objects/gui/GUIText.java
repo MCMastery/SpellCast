@@ -64,6 +64,6 @@ public class GUIText extends GUIObject {
 
     @Override
     public void render(Renderer r) {
-        r.drawText(this.text, this.font, getPosition(), this.color);
+        r.drawText(this.text, this.font, getBounds(), GUITextContainer.HAlignment.LEFT, this.color);
     }
 }

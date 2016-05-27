@@ -3,6 +3,7 @@ package com.spellcastrpg.main.rendering;
 import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.*;
 import com.spellcastrpg.main.geometry.Rectangle;
+import com.spellcastrpg.main.objects.gui.GUITextContainer;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -100,42 +101,41 @@ public class Renderer {
     }
 
 
-    public void drawText(String text, Font font, Vector2d position, RGBAColor color) {
-        this.g2d.setColor(color.toColor());
-        this.g2d.setFont(font);
-        FontMetrics metric = this.g2d.getFontMetrics(font);
-        this.g2d.drawString(text, (int) Math.round(position.getX()), (int) Math.round(position.getY()) + metric.getAscent() - metric.getDescent() - metric.getLeading());
-    }
-    public void drawTextCentered(String text, Font font, Rectangle bounds, RGBAColor color) {
+
+
+
+    public void drawText(String text, Font font, Rectangle bounds, GUITextContainer.HAlignment alignment, RGBAColor color) {
         this.g2d.setColor(color.toColor());
         this.g2d.setFont(font);
         FontMetrics fm = this.g2d.getFontMetrics();
-        double x = (bounds.getWidth() - fm.stringWidth(text)) / 2.0 + bounds.getX();
-        double y = (fm.getAscent() + (bounds.getHeight() - (fm.getAscent() + fm.getDescent())) / 2.0) + bounds.getY();
+        double x, y;
+
+        switch (alignment) {
+            case CENTER:
+                x = (bounds.getWidth() - fm.stringWidth(text)) / 2.0 + bounds.getX();
+                y = (fm.getAscent() + (bounds.getHeight() - (fm.getAscent() + fm.getDescent())) / 2.0) + bounds.getY();
+                break;
+            case RIGHT:
+                x = (bounds.getWidth() - fm.stringWidth(text)) + bounds.getX();
+                y = (fm.getAscent() + (bounds.getHeight() - (fm.getAscent() + fm.getDescent())) / 2.0) + bounds.getY();
+                break;
+            default:
+                FontMetrics metric = this.g2d.getFontMetrics(font);
+                x = bounds.getX();
+                y = bounds.getY() + metric.getAscent() - metric.getDescent() - metric.getLeading();
+                break;
+        }
         this.g2d.drawString(text, (int) Math.round(x), (int) Math.round(y));
     }
 
-
     // returns the bounds the text used up
     //todo this returns a little extra height for some reason (not a lot)
-    public Rectangle drawTextWordWrap(String text, Font font, Rectangle bounds, double lineSpacing, RGBAColor color) {
-        List<String> lines = wordWrap(text, font, bounds);
-        double x = bounds.getX(), y = bounds.getY();
-        for (String line : lines) {
-            drawText(line, font, new Vector2d(x, y), color);
-            Rectangle lineBounds = getTextBounds(line, font);
-            y += lineBounds.getHeight() + lineSpacing;
-        }
-        return new Rectangle(bounds.getPosition(), bounds.getWidth(), y - bounds.getY() - lineSpacing);
-    }
-    // returns the bounds the text used up
-    //todo this returns a little extra height for some reason (not a lot)
-    public Rectangle drawTextWordWrapCentered(String text, Font font, Rectangle bounds, double lineSpacing, RGBAColor color) {
+    public Rectangle drawTextWordWrap(String text, Font font, Rectangle bounds, GUITextContainer.HAlignment alignment, double lineSpacing, RGBAColor color) {
         List<String> lines = wordWrap(text, font, bounds);
         double x = bounds.getX(), y = bounds.getY();
         for (String line : lines) {
             Rectangle lineBounds = getTextBounds(line, font);
-            drawTextCentered(line, font, new Rectangle(new Vector2d(x, y), bounds.getWidth(), lineBounds.getHeight()), color);
+            drawText(line, font, new Rectangle(new Vector2d(x, y), bounds.getWidth(), lineBounds.getHeight()), alignment, color);
             y += lineBounds.getHeight() + lineSpacing;
         }
         return new Rectangle(bounds.getPosition(), bounds.getWidth(), y - bounds.getY() - lineSpacing);
@@ -163,6 +163,8 @@ public class Renderer {
             lines.add(line);
         return lines;
     }
+
+
 
 
 

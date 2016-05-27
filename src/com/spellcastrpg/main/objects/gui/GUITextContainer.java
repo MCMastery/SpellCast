@@ -4,12 +4,12 @@ import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.rendering.Renderer;
 
 public class GUITextContainer extends GUIContainer {
-    public enum Alignment {
-        LEFT, CENTER
+    public enum HAlignment {
+        LEFT, CENTER, RIGHT
     }
 
     private GUIText text;
-    private Alignment alignment;
+    private HAlignment alignment;
     private boolean wordWrap;
     private double lineSpacing;
     // should this container's size match the text's used size
@@ -19,7 +19,7 @@ public class GUITextContainer extends GUIContainer {
         this.text = new GUIText();
         this.constrainWidth = this.constrainHeight = false;
         this.wordWrap = true;
-        this.alignment = Alignment.CENTER;
+        this.alignment = HAlignment.CENTER;
         this.lineSpacing = 7.5;
     }
 
@@ -37,10 +37,10 @@ public class GUITextContainer extends GUIContainer {
         this.text.setText(text);
         updateBounds();
     }
-    public Alignment getAlignment() {
+    public HAlignment getAlignment() {
         return this.alignment;
     }
-    public void setAlignment(Alignment alignment) {
+    public void setAlignment(HAlignment alignment) {
         this.alignment = alignment;
     }
     public boolean useWordWrap() {
@@ -89,16 +89,9 @@ public class GUITextContainer extends GUIContainer {
         super.render(r);
         Rectangle textBounds = getAvailableBounds();
         this.text.setBounds(textBounds);
-        if (this.wordWrap) {
-            if (this.alignment == Alignment.LEFT)
-                r.drawTextWordWrap(this.text.getText(), this.text.getFont(), textBounds, this.lineSpacing, this.text.getColor());
-            else if (this.alignment == Alignment.CENTER)
-                r.drawTextWordWrapCentered(this.text.getText(), this.text.getFont(), textBounds, this.lineSpacing, this.text.getColor());
-        } else {
-            if (this.alignment == Alignment.LEFT)
-                r.drawText(this.text.getText(), this.text.getFont(), textBounds.getPosition(), this.text.getColor());
-            else if (this.alignment == Alignment.CENTER)
-                r.drawTextCentered(this.text.getText(), this.text.getFont(), textBounds, this.text.getColor());
-        }
+        if (this.wordWrap)
+            r.drawTextWordWrap(this.text.getText(), this.text.getFont(), textBounds, this.alignment, this.lineSpacing, this.text.getColor());
+        else
+            r.drawText(this.text.getText(), this.text.getFont(), textBounds, this.alignment, this.text.getColor());
     }
 }
