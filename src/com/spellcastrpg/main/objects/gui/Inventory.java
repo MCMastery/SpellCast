@@ -138,8 +138,9 @@ public class Inventory extends GUIContainer {
         }
         this.itemInfo = new ItemInfoBox(item);
         // add ItemObject.SIZE / 2 to make it centered
-        Vector2d position = new Vector2d(slot * ItemObject.SIZE + ItemObject.SIZE / 2 + getPosition().getX(), getBounds().getY2());
-        this.itemInfo.setPosition(position);
+        Vector2d position = new Vector2d(slot * ItemObject.SIZE + ItemObject.SIZE / 2 + getPosition().getX(), 0);
+        this.itemInfo.setCenter(position);
+        this.itemInfo.setPosition(new Vector2d(this.itemInfo.getPosition().getX(), getBounds().getY2()));
         this.itemInfo.init();
     }
 

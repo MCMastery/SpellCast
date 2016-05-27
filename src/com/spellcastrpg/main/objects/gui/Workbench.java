@@ -24,8 +24,8 @@ public class Workbench extends GUIContainer {
         this.base = null;
         this.modifiers = new HashSet<>();
         this.potionImage = new GUIImage(128, 128);
-        addChild(this.potionImage);
         updateBounds();
+        addChild(this.potionImage);
     }
 
     public GUIImage getPotionImage() {

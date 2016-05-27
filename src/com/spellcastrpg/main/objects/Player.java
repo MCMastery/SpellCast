@@ -10,6 +10,7 @@ import com.spellcastrpg.main.items.ingredients.*;
 import com.spellcastrpg.main.objects.gui.GUIContainer;
 import com.spellcastrpg.main.objects.gui.Inventory;
 import com.spellcastrpg.main.map.RenderedMapTile;
+import com.spellcastrpg.main.objects.gui.TestGUI;
 import com.spellcastrpg.main.objects.gui.Workbench;
 import com.spellcastrpg.main.objects.spells.SpellType;
 import com.spellcastrpg.main.rendering.Animation;
@@ -99,10 +100,14 @@ public class Player extends LivingObject {
         if (key == Key.E) {
             if (!(this.openedGUI instanceof Workbench))
                 setOpenedGUI(new Workbench());
-        } else if (key == Key.K)
+        } else if (key == Key.R) {
+            if (!(this.openedGUI instanceof TestGUI))
+                setOpenedGUI(new TestGUI());
+        } else if (key == Key.K) {
             for (GameObject object : SpellCast.INSTANCE.getObjects())
                 if (object instanceof Enemy)
                     object.destroy();
+        }
     }
     @Override
     public void collide(Collider object) {

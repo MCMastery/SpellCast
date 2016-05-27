@@ -10,7 +10,8 @@ public class ItemInfoBox extends GUITextContainer {
 
     public ItemInfoBox(ItemObject item) {
         this.item = item;
-        setConstrain(true);
+        constrainWidth(true);
+        constrainHeight(true);
         updateText();
     }
 

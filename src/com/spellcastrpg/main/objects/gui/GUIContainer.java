@@ -1,11 +1,15 @@
 package com.spellcastrpg.main.objects.gui;
 
+import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.objects.gui.layout.GUILayout;
+import com.spellcastrpg.main.objects.gui.layout.GUILayoutOption;
 import com.spellcastrpg.main.objects.gui.layout.ManualLayout;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class GUIContainer extends GUIObject {
@@ -15,7 +19,7 @@ public class GUIContainer extends GUIObject {
     public static final double DEFAULT_RADIUS = 10;
     public static final double DEFAULT_BORDER_WEIGHT = 1;
 
-    private Set<GUIObject> children;
+    private Map<GUIObject, GUILayoutOption> children;
     private GUILayout layout;
     private RGBAColor background, border;
     private double radius, borderWeight, padding;
@@ -26,7 +30,7 @@ public class GUIContainer extends GUIObject {
         this.radius = DEFAULT_RADIUS;
         this.borderWeight = DEFAULT_BORDER_WEIGHT;
         this.padding = DEFAULT_PADDING;
-        this.children = new HashSet<>();
+        this.children = new HashMap<>();
         this.layout = new ManualLayout();
         setLayer(Integer.MAX_VALUE - 10);
     }
@@ -34,19 +38,22 @@ public class GUIContainer extends GUIObject {
     @Override
     public void init() {
         super.init();
-        for (GUIObject child : this.children)
+        for (GUIObject child : this.children.keySet())
             child.init();
     }
     @Override
     public void destroy() {
         super.destroy();
-        for (GUIObject child : this.children)
+        for (GUIObject child : this.children.keySet())
             child.destroy();
     }
 
-    public void addChild(GUIObject child) {
-        this.children.add(child);
+    public void addChild(GUIObject child, GUILayoutOption layoutOption) {
+        this.children.put(child, layoutOption);
         arrange();
+    }
+    public void addChild(GUIObject child) {
+        addChild(child, GUILayoutOption.NONE);
     }
     public void removeChild(GUIObject child) {
         this.children.remove(child);
@@ -92,6 +99,10 @@ public class GUIContainer extends GUIObject {
     }
     public void setPadding(double padding) {
         this.padding = padding;
+    }
+
+    public Rectangle getAvailableBounds() {
+        return getBounds().expand(-this.padding * 2, -this.padding * 2);
     }
 
     @Override

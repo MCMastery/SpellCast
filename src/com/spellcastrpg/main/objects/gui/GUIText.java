@@ -34,7 +34,7 @@ public class GUIText extends GUIObject {
         this.font = font;
         this.color = color;
         this.wordWrap = true;
-        this.alignment = Alignment.LEFT;
+        this.alignment = Alignment.CENTER;
         this.lineSpacing = 7.5;
     }
 

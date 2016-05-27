@@ -7,11 +7,11 @@ import com.spellcastrpg.main.rendering.Renderer;
 public class GUITextContainer extends GUIContainer {
     private GUIText text;
     // should this container's size match the text's used size
-    private boolean constrain;
+    private boolean constrainWidth, constrainHeight;
 
     public GUITextContainer() {
         this.text = new GUIText();
-        this.constrain = false;
+        this.constrainWidth = this.constrainHeight = false;
     }
 
     public GUIText getText() {
@@ -26,37 +26,46 @@ public class GUITextContainer extends GUIContainer {
     }
     public void setTextValue(String text) {
         this.text.setText(text);
+        updateBounds();
     }
-    public boolean isConstrained() {
-        return this.constrain;
+    public boolean constrainWidth() {
+        return this.constrainWidth;
     }
-    public void setConstrain(boolean constrain) {
-        if (!this.constrain && constrain)
-            updateBounds();
-        this.constrain = constrain;
+    public void constrainWidth(boolean constrainWidth) {
+        this.constrainWidth = constrainWidth;
+    }
+    public boolean constrainHeight() {
+        return this.constrainHeight;
+    }
+    public void constrainHeight(boolean constrainHeight) {
+        this.constrainHeight = constrainHeight;
     }
 
-    public Rectangle getTextBounds() {
-        return getBounds().expand(-getPadding() * 2, -getPadding() * 2);
-    }
     public void updateBounds() {
+        getBounds();
+    }
+    @Override
+    public Rectangle getBounds() {
         // constrain the bounds around the text
-        if (this.constrain) {
+        if (this.constrainWidth || this.constrainHeight) {
             Rectangle textBounds = SpellCast.INSTANCE.getWindow().getCanvas().getLastRenderer().getTextBounds(this.text.getText(), this.text.getFont());
             textBounds = textBounds.setPosition(getPosition());
             // add padding
             textBounds = textBounds.expand(getPadding() * 2, getPadding() * 2);
             // offset position because of padding
             textBounds = textBounds.translate(getPadding(), getPadding());
-            setBounds(textBounds);
+            if (this.constrainWidth)
+                setBounds(super.getBounds().setWidth(textBounds.getWidth()));
+            if (this.constrainHeight)
+                setBounds(super.getBounds().setHeight(textBounds.getHeight()));
         }
+        return super.getBounds();
     }
 
     @Override
     public void render(Renderer r) {
         super.render(r);
-        System.out.println();
-        Rectangle textBounds = getTextBounds();
+        Rectangle textBounds = getAvailableBounds();
         this.text.setBounds(textBounds);
         this.text.render(r);
     }
