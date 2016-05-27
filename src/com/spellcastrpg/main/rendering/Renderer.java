@@ -28,20 +28,6 @@ public class Renderer {
             e.printStackTrace();
         }
     }
-    public static RGBAColor getAverageColor(BufferedImage image) {
-        RGBAColor average = RGBAColor.TRANSPARENT;
-        int pixels = 0;
-        for (int x = 0; x < image.getWidth(); x++) {
-            for (int y = 0; y < image.getHeight(); y++) {
-                RGBAColor pixel = RGBAColor.fromColor(new Color(image.getRGB(x, y), true));
-                if (pixel.getA() == 0)
-                    continue;
-                average = average.add(pixel);
-                pixels++;
-            }
-        }
-        return average.divide(pixels);
-    }
 
 
 
@@ -183,23 +169,14 @@ public class Renderer {
     public void drawImage(BufferedImage image, Vector2d position) {
         this.g2d.drawImage(image, null, (int) Math.round(position.getX()), (int) Math.round(position.getY()));
     }
+    public void drawImageCentered(BufferedImage image, Vector2d center) {
+        drawImage(image, center.subtract(image.getWidth() / 2.0, image.getHeight() / 2.0));
+    }
     public void drawRoundedImage(BufferedImage image, double arcWidth, double arcHeight, Vector2d position) {
-        int w = image.getWidth();
-        int h = image.getHeight();
-        BufferedImage output = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = output.createGraphics();
-        // This is what we want, but it only does hard-clipping, i.e. aliasing
-        // g2.setClip(new RoundRectangle2D ...)
-
-        // so instead fake soft-clipping by first drawing the desired clip shape
-        // in fully opaque white with antialiasing enabled...
-        g2.setComposite(AlphaComposite.Src);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setColor(Color.WHITE);
-        g2.fill(new RoundRectangle2D.Float(0, 0, w, h, (int) Math.round(arcWidth), (int) Math.round(arcHeight)));
-        g2.setComposite(AlphaComposite.SrcIn);
-        g2.drawImage(image, null, 0, 0);
-        this.g2d.drawImage(output, (int) Math.round(position.getX()), (int) Math.round(position.getY()), null);
+        this.g2d.drawImage(ImageUtils.round(image, arcWidth, arcHeight), (int) Math.round(position.getX()), (int) Math.round(position.getY()), null);
+    }
+    public void drawRoundedImageCentered(BufferedImage image, double arcWidth, double arcHeight, Vector2d center) {
+        drawRoundedImage(image, arcWidth, arcHeight, center.subtract(image.getWidth() / 2.0, image.getHeight() / 2.0));
     }
 
 

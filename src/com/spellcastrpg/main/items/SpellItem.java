@@ -1,7 +1,6 @@
 package com.spellcastrpg.main.items;
 
 import com.spellcastrpg.main.SpellCast;
-import com.spellcastrpg.main.items.ingredients.Ingredient;
 import com.spellcastrpg.main.objects.spells.SpellType;
 import com.spellcastrpg.main.objects.spells.SpellUtils;
 import com.spellcastrpg.main.rendering.RGBAColor;

@@ -55,6 +55,7 @@ public class GUITextContainer extends GUIContainer {
     @Override
     public void render(Renderer r) {
         super.render(r);
+        System.out.println();
         Rectangle textBounds = getTextBounds();
         this.text.setBounds(textBounds);
         this.text.render(r);

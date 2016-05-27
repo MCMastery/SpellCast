@@ -1,12 +1,8 @@
 package com.spellcastrpg.main.objects.gui;
 
-import com.spellcastrpg.main.Anchor;
-import com.spellcastrpg.main.IAnchor;
 import com.spellcastrpg.main.items.ItemObject;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
-
-import java.awt.*;
 
 
 public class ItemInfoBox extends GUITextContainer {
@@ -15,7 +11,6 @@ public class ItemInfoBox extends GUITextContainer {
     public ItemInfoBox(ItemObject item) {
         this.item = item;
         setConstrain(true);
-        setAnchor(new Anchor(IAnchor.HAnchor.CENTER, IAnchor.VAnchor.NORTH));
         updateText();
     }
 

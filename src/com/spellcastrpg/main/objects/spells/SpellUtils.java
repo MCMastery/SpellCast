@@ -3,8 +3,8 @@ package com.spellcastrpg.main.objects.spells;
 import com.spellcastrpg.main.items.Item;
 import com.spellcastrpg.main.items.ItemType;
 import com.spellcastrpg.main.items.SpellItem;
+import com.spellcastrpg.main.rendering.ImageUtils;
 import com.spellcastrpg.main.rendering.RGBAColor;
-import com.spellcastrpg.main.rendering.Renderer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,6 +23,9 @@ public class SpellUtils {
         g2d.drawImage(image, 0, 0, null);
         g2d.dispose();
 
+        if (color == null)
+            return colored;
+
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 RGBAColor pixel = RGBAColor.fromColor(new Color(image.getRGB(x, y), true));
@@ -38,11 +41,13 @@ public class SpellUtils {
     public static RGBAColor getColor(ItemType base, Set<ItemType> modifiers) {
         List<RGBAColor> colors = new ArrayList<>();
         // weight the base item heavier
-        RGBAColor baseAvgColor = Renderer.getAverageColor(base.getImage());
-        colors.add(baseAvgColor.multiply(Math.sqrt(modifiers.size())));
+        RGBAColor baseAvgColor = ImageUtils.getAverageColor(base.getImage());
+        // +1 so it doesn't do Math.sqrt(0) if there are no modifiers
+        colors.add(baseAvgColor.multiply(Math.sqrt(modifiers.size() + 1)));
 
         for (ItemType modifier : modifiers)
-            colors.add(Renderer.getAverageColor(modifier.getImage()));
+            if (modifier.getImage() != null)
+                colors.add(ImageUtils.getAverageColor(modifier.getImage()));
         return RGBAColor.average(colors);
     }
 
