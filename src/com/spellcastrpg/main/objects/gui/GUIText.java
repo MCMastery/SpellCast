@@ -1,21 +1,16 @@
 package com.spellcastrpg.main.objects.gui;
 
+import com.spellcastrpg.main.SpellCast;
+import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
 
 import java.awt.*;
 
 public class GUIText extends GUIObject {
-    public enum Alignment {
-        LEFT, CENTER
-    }
-
     private String text;
     private Font font;
     private RGBAColor color;
-    private Alignment alignment;
-    private boolean wordWrap;
-    private double lineSpacing;
 
     public GUIText() {
         this("");
@@ -33,9 +28,7 @@ public class GUIText extends GUIObject {
         this.text = text;
         this.font = font;
         this.color = color;
-        this.wordWrap = true;
-        this.alignment = Alignment.CENTER;
-        this.lineSpacing = 7.5;
+        updateBounds();
     }
 
     public String getText() {
@@ -56,37 +49,21 @@ public class GUIText extends GUIObject {
     public void setColor(RGBAColor color) {
         this.color = color;
     }
-    public Alignment getAlignment() {
-        return this.alignment;
+
+    public void updateBounds() {
+        getBounds();
     }
-    public void setAlignment(Alignment alignment) {
-        this.alignment = alignment;
-    }
-    public boolean useWordWrap() {
-        return this.wordWrap;
-    }
-    public void useWordWrap(boolean wordWrap) {
-        this.wordWrap = wordWrap;
-    }
-    public double getLineSpacing() {
-        return this.lineSpacing;
-    }
-    public void setLineSpacing(double lineSpacing) {
-        this.lineSpacing = lineSpacing;
+    @Override
+    public Rectangle getBounds() {
+        // constrain the bounds around the text
+        Rectangle textBounds = SpellCast.INSTANCE.getWindow().getCanvas().getLastRenderer().getTextBounds(this.text, this.font);
+        textBounds = textBounds.setPosition(getPosition());
+        setBounds(textBounds);
+        return super.getBounds();
     }
 
     @Override
     public void render(Renderer r) {
-        if (this.wordWrap) {
-            if (this.alignment == Alignment.LEFT)
-                r.drawTextWordWrap(this.text, this.font, getBounds(), this.lineSpacing, this.color);
-            else if (this.alignment == Alignment.CENTER)
-                r.drawTextWordWrapCentered(this.text, this.font, getBounds(), this.lineSpacing, this.color);
-        } else {
-            if (this.alignment == Alignment.LEFT)
-                r.drawText(this.text, this.font, getPosition(), this.color);
-            else if (this.alignment == Alignment.CENTER)
-                r.drawTextCentered(this.text, this.font, getBounds(), this.color);
-        }
+        r.drawText(this.text, this.font, getPosition(), this.color);
     }
 }

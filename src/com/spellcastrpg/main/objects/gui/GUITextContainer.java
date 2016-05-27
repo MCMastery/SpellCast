@@ -1,17 +1,26 @@
 package com.spellcastrpg.main.objects.gui;
 
-import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.rendering.Renderer;
 
 public class GUITextContainer extends GUIContainer {
+    public enum Alignment {
+        LEFT, CENTER
+    }
+
     private GUIText text;
+    private Alignment alignment;
+    private boolean wordWrap;
+    private double lineSpacing;
     // should this container's size match the text's used size
     private boolean constrainWidth, constrainHeight;
 
     public GUITextContainer() {
         this.text = new GUIText();
         this.constrainWidth = this.constrainHeight = false;
+        this.wordWrap = true;
+        this.alignment = Alignment.CENTER;
+        this.lineSpacing = 7.5;
     }
 
     public GUIText getText() {
@@ -27,6 +36,24 @@ public class GUITextContainer extends GUIContainer {
     public void setTextValue(String text) {
         this.text.setText(text);
         updateBounds();
+    }
+    public Alignment getAlignment() {
+        return this.alignment;
+    }
+    public void setAlignment(Alignment alignment) {
+        this.alignment = alignment;
+    }
+    public boolean useWordWrap() {
+        return this.wordWrap;
+    }
+    public void useWordWrap(boolean wordWrap) {
+        this.wordWrap = wordWrap;
+    }
+    public double getLineSpacing() {
+        return this.lineSpacing;
+    }
+    public void setLineSpacing(double lineSpacing) {
+        this.lineSpacing = lineSpacing;
     }
     public boolean constrainWidth() {
         return this.constrainWidth;
@@ -48,16 +75,11 @@ public class GUITextContainer extends GUIContainer {
     public Rectangle getBounds() {
         // constrain the bounds around the text
         if (this.constrainWidth || this.constrainHeight) {
-            Rectangle textBounds = SpellCast.INSTANCE.getWindow().getCanvas().getLastRenderer().getTextBounds(this.text.getText(), this.text.getFont());
-            textBounds = textBounds.setPosition(getPosition());
-            // add padding
-            textBounds = textBounds.expand(getPadding() * 2, getPadding() * 2);
-            // offset position because of padding
-            textBounds = textBounds.translate(getPadding(), getPadding());
+            Rectangle textBounds = this.text.getBounds();
             if (this.constrainWidth)
-                setBounds(super.getBounds().setWidth(textBounds.getWidth()));
+                setBounds(super.getBounds().setWidth(textBounds.getWidth() + getPadding() * 2));
             if (this.constrainHeight)
-                setBounds(super.getBounds().setHeight(textBounds.getHeight()));
+                setBounds(super.getBounds().setHeight(textBounds.getHeight() + getPadding() * 2));
         }
         return super.getBounds();
     }
@@ -67,6 +89,16 @@ public class GUITextContainer extends GUIContainer {
         super.render(r);
         Rectangle textBounds = getAvailableBounds();
         this.text.setBounds(textBounds);
-        this.text.render(r);
+        if (this.wordWrap) {
+            if (this.alignment == Alignment.LEFT)
+                r.drawTextWordWrap(this.text.getText(), this.text.getFont(), textBounds, this.lineSpacing, this.text.getColor());
+            else if (this.alignment == Alignment.CENTER)
+                r.drawTextWordWrapCentered(this.text.getText(), this.text.getFont(), textBounds, this.lineSpacing, this.text.getColor());
+        } else {
+            if (this.alignment == Alignment.LEFT)
+                r.drawText(this.text.getText(), this.text.getFont(), textBounds.getPosition(), this.text.getColor());
+            else if (this.alignment == Alignment.CENTER)
+                r.drawTextCentered(this.text.getText(), this.text.getFont(), textBounds, this.text.getColor());
+        }
     }
 }
