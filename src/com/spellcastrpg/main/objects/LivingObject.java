@@ -1,11 +1,9 @@
 package com.spellcastrpg.main.objects;
 
-import com.spellcastrpg.main.geometry.*;
 import com.spellcastrpg.main.geometry.Rectangle;
+import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
-
-import java.awt.*;
 
 /**
  * Created by laser_000 on 5/14/2016.

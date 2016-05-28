@@ -58,7 +58,7 @@ public class TestGUI extends GUIContainer {
             }
         };
         this.center.setTextValue("CENTER");
-        this.center.setAlignment(GUITextContainer.HAlignment.RIGHT);
+        this.center.setHorizontalAlign(GUITextContainer.HAlignment.RIGHT);
         addChild(this.center, BorderLayout.CENTER);
     }
     public void updateBounds() {

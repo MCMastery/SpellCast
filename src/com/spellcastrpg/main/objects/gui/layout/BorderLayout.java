@@ -24,31 +24,34 @@ public class BorderLayout implements GUILayout {
         Rectangle westBounds = (west != null) ? west.getBounds() : new Rectangle();
         Rectangle centerBounds = (center != null) ? center.getBounds() : new Rectangle();
 
+        // height of middle row (max of east, center, west)
+        double midHeight = Math.max(Math.max(eastBounds.getHeight(), centerBounds.getHeight()), westBounds.getHeight());
+
         if (north != null)
-            north.setBounds(getNorthBounds(container.getAvailableBounds(), northBounds, eastBounds, southBounds, westBounds, centerBounds));
+            north.setBounds(getNorthBounds(container.getAvailableBounds(), northBounds));
         if (south != null)
-            south.setBounds(getSouthBounds(container.getAvailableBounds(), northBounds, eastBounds, southBounds, westBounds, centerBounds));
+            south.setBounds(getSouthBounds(container.getAvailableBounds(), northBounds, southBounds));
         if (west != null)
-            west.setBounds(getWestBounds(container.getAvailableBounds(), northBounds, eastBounds, southBounds, westBounds, centerBounds));
+            west.setBounds(getWestBounds(container.getAvailableBounds(), northBounds, eastBounds, midHeight));
         if (east != null)
-            east.setBounds(getEastBounds(container.getAvailableBounds(), northBounds, eastBounds, southBounds, westBounds, centerBounds));
+            east.setBounds(getEastBounds(container.getAvailableBounds(), northBounds, eastBounds, midHeight));
         if (center != null)
-            center.setBounds(getCenterBounds(container.getAvailableBounds(), northBounds, eastBounds, southBounds, westBounds, centerBounds));
+            center.setBounds(getCenterBounds(container.getAvailableBounds(), northBounds, eastBounds, southBounds, westBounds));
     }
 
-    public Rectangle getNorthBounds(Rectangle bounds, Rectangle north, Rectangle east, Rectangle south, Rectangle west, Rectangle center) {
+    public Rectangle getNorthBounds(Rectangle bounds, Rectangle north) {
         return new Rectangle(bounds.getPosition(), bounds.getWidth(), north.getHeight());
     }
-    public Rectangle getSouthBounds(Rectangle bounds, Rectangle north, Rectangle east, Rectangle south, Rectangle west, Rectangle center) {
+    public Rectangle getSouthBounds(Rectangle bounds, Rectangle north, Rectangle south) {
         return new Rectangle(new Vector2d(bounds.getX(), bounds.getY2() - south.getHeight()), bounds.getWidth(), north.getHeight());
     }
-    public Rectangle getWestBounds(Rectangle bounds, Rectangle north, Rectangle east, Rectangle south, Rectangle west, Rectangle center) {
-        return new Rectangle(new Vector2d(bounds.getX(), north.getY2()), east.getWidth(), bounds.getHeight() - south.getHeight() - north.getHeight());
+    public Rectangle getWestBounds(Rectangle bounds, Rectangle north, Rectangle east, double midHeight) {
+        return new Rectangle(new Vector2d(bounds.getX(), north.getY2()), east.getWidth(), midHeight);
     }
-    public Rectangle getEastBounds(Rectangle bounds, Rectangle north, Rectangle east, Rectangle south, Rectangle west, Rectangle center) {
-        return new Rectangle(bounds.getPosition().add(bounds.getWidth() - east.getWidth(), north.getHeight()), east.getWidth(), bounds.getHeight() - south.getHeight() - north.getHeight());
+    public Rectangle getEastBounds(Rectangle bounds, Rectangle north, Rectangle east, double midHeight) {
+        return new Rectangle(bounds.getPosition().add(bounds.getWidth() - east.getWidth(), north.getHeight()), east.getWidth(), midHeight);
     }
-    public Rectangle getCenterBounds(Rectangle bounds, Rectangle north, Rectangle east, Rectangle south, Rectangle west, Rectangle center) {
+    public Rectangle getCenterBounds(Rectangle bounds, Rectangle north, Rectangle east, Rectangle south, Rectangle west) {
         return new Rectangle(new Vector2d(west.getX2(), west.getY()), east.getX() - west.getX2(), south.getY() - north.getY2());
     }
 

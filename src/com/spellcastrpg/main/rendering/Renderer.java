@@ -1,17 +1,16 @@
 package com.spellcastrpg.main.rendering;
 
 import com.spellcastrpg.main.SpellCast;
-import com.spellcastrpg.main.geometry.*;
 import com.spellcastrpg.main.geometry.Rectangle;
+import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.objects.gui.GUITextContainer;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -103,26 +102,34 @@ public class Renderer {
 
 
 
-
-    public void drawText(String text, Font font, Rectangle bounds, GUITextContainer.HAlignment alignment, RGBAColor color) {
+    // draws single line of text
+    public void drawText(String text, Font font, Rectangle bounds, GUITextContainer.HAlignment horizAlign, GUITextContainer.VAlignment vertAlign, RGBAColor color) {
         this.g2d.setColor(color.toColor());
         this.g2d.setFont(font);
         FontMetrics fm = this.g2d.getFontMetrics();
         double x, y;
 
-        switch (alignment) {
+        switch (horizAlign) {
             case CENTER:
                 x = (bounds.getWidth() - fm.stringWidth(text)) / 2.0 + bounds.getX();
-                y = (fm.getAscent() + (bounds.getHeight() - (fm.getAscent() + fm.getDescent())) / 2.0) + bounds.getY();
                 break;
             case RIGHT:
                 x = (bounds.getWidth() - fm.stringWidth(text)) + bounds.getX();
-                y = (fm.getAscent() + (bounds.getHeight() - (fm.getAscent() + fm.getDescent())) / 2.0) + bounds.getY();
                 break;
             default:
-                FontMetrics metric = this.g2d.getFontMetrics(font);
                 x = bounds.getX();
-                y = bounds.getY() + metric.getAscent() - metric.getDescent() - metric.getLeading();
+                break;
+        }
+        y = fm.getAscent() + (bounds.getHeight() - (fm.getAscent() + fm.getDescent())) / 2.0 + bounds.getY();
+        switch (vertAlign) {
+            case CENTER:
+                y -= bounds.getY();
+                y /= 2;
+                y += bounds.getCenter().getY();
+                break;
+            case BOTTOM:
+                y = bounds.getY2();
+            default:
                 break;
         }
         this.g2d.drawString(text, (int) Math.round(x), (int) Math.round(y));
@@ -130,12 +137,13 @@ public class Renderer {
 
     // returns the bounds the text used up
     //todo this returns a little extra height for some reason (not a lot)
-    public Rectangle drawTextWordWrap(String text, Font font, Rectangle bounds, GUITextContainer.HAlignment alignment, double lineSpacing, RGBAColor color) {
+    //todo IMPLEMENT VERTICAL ALIGN
+    public Rectangle drawTextWordWrap(String text, Font font, Rectangle bounds, GUITextContainer.HAlignment horizAlign, GUITextContainer.VAlignment vertAlign, double lineSpacing, RGBAColor color) {
         List<String> lines = wordWrap(text, font, bounds);
         double x = bounds.getX(), y = bounds.getY();
         for (String line : lines) {
             Rectangle lineBounds = getTextBounds(line, font);
-            drawText(line, font, new Rectangle(new Vector2d(x, y), bounds.getWidth(), lineBounds.getHeight()), alignment, color);
+            drawText(line, font, new Rectangle(new Vector2d(x, y), bounds.getWidth(), lineBounds.getHeight()), horizAlign, vertAlign, color);
             y += lineBounds.getHeight() + lineSpacing;
         }
         return new Rectangle(bounds.getPosition(), bounds.getWidth(), y - bounds.getY() - lineSpacing);

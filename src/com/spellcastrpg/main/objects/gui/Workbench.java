@@ -1,6 +1,8 @@
 package com.spellcastrpg.main.objects.gui;
 
-import com.spellcastrpg.main.*;
+import com.spellcastrpg.main.Input;
+import com.spellcastrpg.main.Key;
+import com.spellcastrpg.main.SpellCast;
 import com.spellcastrpg.main.geometry.Rectangle;
 import com.spellcastrpg.main.geometry.Vector2d;
 import com.spellcastrpg.main.items.ItemObject;

@@ -8,9 +8,7 @@ import com.spellcastrpg.main.rendering.RGBAColor;
 import com.spellcastrpg.main.rendering.Renderer;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class GUIContainer extends GUIObject {
     public static final RGBAColor DEFAULT_BACKGROUND = new RGBAColor(0.75, 0.75, 0.75, 0.85);

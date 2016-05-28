@@ -7,9 +7,13 @@ public class GUITextContainer extends GUIContainer {
     public enum HAlignment {
         LEFT, CENTER, RIGHT
     }
+    public enum VAlignment {
+        TOP, CENTER, BOTTOM
+    }
 
     private GUIText text;
-    private HAlignment alignment;
+    private HAlignment horizontalAlign;
+    private VAlignment verticalAlign;
     private boolean wordWrap;
     private double lineSpacing;
     // should this container's size match the text's used size
@@ -19,8 +23,10 @@ public class GUITextContainer extends GUIContainer {
         this.text = new GUIText();
         this.constrainWidth = this.constrainHeight = false;
         this.wordWrap = true;
-        this.alignment = HAlignment.CENTER;
+        this.horizontalAlign = HAlignment.CENTER;
+        this.verticalAlign = VAlignment.CENTER;
         this.lineSpacing = 7.5;
+        setLayer(Integer.MAX_VALUE - 9);
     }
 
     public GUIText getText() {
@@ -37,11 +43,17 @@ public class GUITextContainer extends GUIContainer {
         this.text.setText(text);
         updateBounds();
     }
-    public HAlignment getAlignment() {
-        return this.alignment;
+    public HAlignment getHorizontalAlign() {
+        return this.horizontalAlign;
     }
-    public void setAlignment(HAlignment alignment) {
-        this.alignment = alignment;
+    public void setHorizontalAlign(HAlignment alignment) {
+        this.horizontalAlign = alignment;
+    }
+    public VAlignment getVerticalAlign() {
+        return this.verticalAlign;
+    }
+    public void setVerticalAlign(VAlignment alignment) {
+        this.verticalAlign = alignment;
     }
     public boolean useWordWrap() {
         return this.wordWrap;
@@ -60,19 +72,17 @@ public class GUITextContainer extends GUIContainer {
     }
     public void constrainWidth(boolean constrainWidth) {
         this.constrainWidth = constrainWidth;
+        updateBounds();
     }
     public boolean constrainHeight() {
         return this.constrainHeight;
     }
     public void constrainHeight(boolean constrainHeight) {
         this.constrainHeight = constrainHeight;
+        updateBounds();
     }
 
     public void updateBounds() {
-        getBounds();
-    }
-    @Override
-    public Rectangle getBounds() {
         // constrain the bounds around the text
         if (this.constrainWidth || this.constrainHeight) {
             Rectangle textBounds = this.text.getBounds();
@@ -81,7 +91,6 @@ public class GUITextContainer extends GUIContainer {
             if (this.constrainHeight)
                 setBounds(super.getBounds().setHeight(textBounds.getHeight() + getPadding() * 2));
         }
-        return super.getBounds();
     }
 
     @Override
@@ -90,8 +99,8 @@ public class GUITextContainer extends GUIContainer {
         Rectangle textBounds = getAvailableBounds();
         this.text.setBounds(textBounds);
         if (this.wordWrap)
-            r.drawTextWordWrap(this.text.getText(), this.text.getFont(), textBounds, this.alignment, this.lineSpacing, this.text.getColor());
+            r.drawTextWordWrap(this.text.getText(), this.text.getFont(), textBounds, this.horizontalAlign, this.verticalAlign, this.lineSpacing, this.text.getColor());
         else
-            r.drawText(this.text.getText(), this.text.getFont(), textBounds, this.alignment, this.text.getColor());
+            r.drawText(this.text.getText(), this.text.getFont(), textBounds, this.horizontalAlign, this.verticalAlign, this.text.getColor());
     }
 }

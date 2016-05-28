@@ -1,7 +1,7 @@
 package com.spellcastrpg.main.map;
 
-import com.spellcastrpg.main.objects.Collider;
 import com.spellcastrpg.main.geometry.Rectangle;
+import com.spellcastrpg.main.objects.Collider;
 
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
